@@ -1,51 +1,44 @@
-import React, { useEffect } from 'react';
-import { ThemeProvider } from './contexts/ThemeContext';
-import Navigation from './components/Navigation';
-import HomeSection from './components/HomeSection';
-import AboutSection from './components/AboutSection';
-import ProjectsSection from './components/ProjectsSection';
-import ResumeSection from './components/ResumeSection';
-import ContactSection from './components/ContactSection';
-import Footer from './components/Footer';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
+// Components (Header and Footer live here)
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+// Pages (These should be in the 'pages' folder, not 'components')
+import Home from './pages/Home';       // <-- Change ./components/ to ./pages/
+import About from './pages/About';     // <-- Change ./components/ to ./pages/
+import Projects from './pages/Projects'; // <-- Change ./components/ to ./pages/
+import Resume from './pages/Resume';   // <-- Change ./components/ to ./pages/
+import Contact from './pages/Contact'; // <-- Change ./components/ to ./pages/
+
 function App() {
-  useEffect(() => {
-    // Initialize scroll-based animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '-50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, observerOptions);
-
-    // Observe all elements with fade-in class
-    const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
-    animatedElements.forEach(el => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <ThemeProvider>
-      <div className="App">
-        <Navigation />
-        <main>
-          <HomeSection />
-          <AboutSection />
-          <ProjectsSection />
-          <ResumeSection />
-          <ContactSection />
+    <Router>
+      <div className="d-flex flex-column min-vh-100 position-relative">
+        
+        {/* Add this Block for Background */}
+        <div className="aurora-container">
+          <div className="aurora-blob blob-1"></div>
+          <div className="aurora-blob blob-2"></div>
+          <div className="aurora-blob blob-3"></div>
+        </div>
+
+        <Header />
+        <main className="flex-grow-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/resume" element={<Resume />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
         </main>
         <Footer />
       </div>
-    </ThemeProvider>
+    </Router>
   );
 }
 

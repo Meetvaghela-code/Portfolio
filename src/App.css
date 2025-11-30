@@ -1,131 +1,255 @@
-/* App.css - Portfolio specific styles */
+/* App.css - The Premium Apple Design System with Dark Mode */
 
-.App {
-  min-height: 100vh;
-  overflow-x: hidden;
+:root {
+  /* --- LIGHT MODE (Default) --- */
+  --bg-color: #F5F5F7;
+  --text-primary: #1d1d1f;
+  --text-secondary: #86868b;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --border-color: rgba(0, 0, 0, 0.05);
+  --nav-bg: transparent; /* Removed background for transparent header */
+  --btn-bg: #1d1d1f;
+  --btn-text: #ffffff;
+  
+  /* Shared Constants */
+  --accent-color: #0071e3;
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.08);
+  --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Loading animation */
-.loading-container {
+/* --- DARK MODE OVERRIDES --- */
+[data-theme='dark'] {
+  --bg-color: #000000;
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --card-bg: rgba(28, 28, 30, 0.8);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --nav-bg: transparent; /* Removed background for transparent header */
+  --btn-bg: #ffffff;
+  --btn-text: #000000;
+  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* 1. Global Reset & Typography */
+body {
+  background-color: var(--bg-color);
+  font-family: var(--font-stack);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth Theme Transition */
+}
+
+/* --- RESTORED TYPOGRAPHY RULES --- */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+p, .lead, li {
+  color: var(--text-secondary);
+}
+
+strong, b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+/* -------------------------------- */
+
+/* 2. Premium Text Selection */
+::selection {
+  background: rgba(0, 113, 227, 0.3);
+  color: white;
+}
+
+/* 3. Custom Scrollbar (Webkit) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 10px;
+  opacity: 0.5;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-primary);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+/* 4. Film Grain Overlay */
+.grain-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--bg-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  pointer-events: none;
   z-index: 9999;
+  opacity: 0.25; /* Reduced slightly for dark mode clarity */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
 }
 
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid var(--border-light);
-  border-top: 3px solid var(--primary);
+/* 5. Aurora Background Blobs */
+.aurora-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--bg-color);
+  transition: background 0.3s ease;
+}
+
+.aurora-blob {
+  position: absolute;
+  filter: blur(80px);
+  opacity: 0.4;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* Dark Mode specific blob adjustments (Optional: makes them subtle) */
+[data-theme='dark'] .aurora-blob {
+  opacity: 0.15; /* Dimmer blobs in dark mode so text is readable */
+  filter: blur(100px);
 }
 
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
+.blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: #e0f2fe; animation-delay: 0s; }
+[data-theme='dark'] .blob-1 { background: #1e3a8a; } /* Dark Blue in Dark Mode */
+
+.blob-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: #f3e8ff; animation-delay: -5s; }
+[data-theme='dark'] .blob-2 { background: #581c87; } /* Dark Purple in Dark Mode */
+
+.blob-3 { top: 40%; left: 30%; width: 40vw; height: 40vw; background: #fce7f3; animation-delay: -10s; opacity: 0.3; }
+[data-theme='dark'] .blob-3 { background: #be185d; } /* Dark Pink in Dark Mode */
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 20px) scale(1.05); }
+  100% { transform: translate(-20px, -20px) scale(0.95); }
 }
 
-/* Selection styling */
-::selection {
-  background: var(--primary);
-  color: white;
+/* 6. Apple Card Style (Glassmorphism) */
+.apple-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  color: var(--text-primary);
 }
 
-::-moz-selection {
-  background: var(--primary);
-  color: white;
+.apple-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent-color);
 }
 
-/* Focus styles for accessibility */
-*:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+/* 7. Apple Button Style */
+.btn-apple {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border-radius: 50px;
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Button focus styles */
-.btn:focus,
-.btn:focus-visible {
-  box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+.btn-apple:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  opacity: 0.9;
+  color: var(--btn-text);
 }
 
-/* Custom animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 30px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+.btn-apple-secondary {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: 50px;
+  padding: 12px 28px;
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translate3d(-30px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+.btn-apple-secondary:hover {
+  background-color: var(--bg-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transform: translateY(-1px);
+  color: var(--text-primary);
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translate3d(30px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+/* 8. Text Gradients */
+.text-gradient {
+  background: linear-gradient(135deg, #0071e3 0%, #a855f7 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Performance optimizations */
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* 9. Animations */
+.fade-up {
+  animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px);
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive images */
-.img-fluid {
-  max-width: 100%;
-  height: auto;
+/* 10. Navbar Updates for Dark Mode */
+.apple-navbar {
+  background: var(--nav-bg) !important;
+  border-bottom: none !important;
 }
 
-/* Print styles */
-@media print {
-  .navbar,
-  .footer,
-  .btn {
-    display: none !important;
-  }
-  
-  body {
-    background: white !important;
-    color: black !important;
-  }
-  
-  .section {
-    page-break-inside: avoid;
-  }
+/* 11. Modal Dark Mode Tweaks */
+.modal-content {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+.modal-header, .modal-footer {
+  border-color: var(--border-color) !important;
+  background-color: var(--bg-color) !important;
+}
+.btn-close {
+  filter: none;
+}
+[data-theme='dark'] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* 12. Footer Dark Mode Tweaks */
+[data-theme='dark'] .apple-footer {
+  background: var(--card-bg) !important;
+  border-top-color: var(--border-color) !important;
 }
