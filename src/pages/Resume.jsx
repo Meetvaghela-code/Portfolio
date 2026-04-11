@@ -121,7 +121,7 @@ const Resume = () => {
         </div>
 
         <a
-          href="public/Resume.pdf"
+          href="public/Resume_update.pdf"
           download
           className="btn btn-apple d-flex align-items-center gap-2 shadow-sm"
         >

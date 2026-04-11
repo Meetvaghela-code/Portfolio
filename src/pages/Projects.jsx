@@ -3,16 +3,16 @@ import { Modal } from 'react-bootstrap';
 
 // --- Inline SVG Icons (No external dependencies) ---
 const Github = ({ size = 18 }) => (
-  <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+  <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></svg>
 );
 const Eye = ({ size = 18 }) => (
-  <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/></svg>
+  <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" /><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" /></svg>
 );
 const X = ({ size = 24 }) => (
-  <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>
+  <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" /></svg>
 );
 const StarFill = ({ size = 12 }) => (
-  <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+  <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" /></svg>
 );
 
 const Projects = () => {
@@ -25,7 +25,25 @@ const Projects = () => {
   };
 
   const projectList = [
-       {
+    {
+      id: 1,
+      title: 'Apex-Agent',
+      subtitle: ' A SECURE MULTI-MODAL AUTONOMOUS FRAMEWORK',
+      desc: 'Apex-Agent is an innovative framework designed to bridge the gap between static Large Language Models and autonomous execution. Imagine an AI system securely acting as an autonomous agent that maintains context over long continuous sessions while strictly ensuring operational safety. With Apex-Agent, users benefit from a multi-tier memory structure and a human-in-the-loop action lifecycle that securely manages tasks ranging from friendly interactions to complex automation. The platform leverages Model Context Protocol (MCP) technologies, enabling your AI companion to execute dynamic tasks in an isolated sandbox and adapt to interactions over time without the risk of unverified or hallucinated destructive actions, fostering a trustworthy human-AI system.',
+      size: 'col-md-8', // Wide Card
+      layout: 'vertical', // Image left, text right
+      image: '/apex.png',
+      technologies: ['FastAPI', 'LangChain', 'Langgraph', 'OpenAI', 'Pinecone', 'MCP'],
+      githubUrl: 'https://github.com/Meetvaghela-code/Apex-Agent',
+      featured: true,
+      details: {
+        overview: 'Apex-Agent is an innovative framework designed to bridge the gap between static Large Language Models and autonomous execution. Imagine an AI system securely acting as an autonomous agent that maintains context over long continuous sessions while strictly ensuring operational safety. With Apex-Agent, users benefit from a multi-tier memory structure and a human-in-the-loop action lifecycle that securely manages tasks ranging from friendly interactions to complex automation. The platform leverages Model Context Protocol (MCP) technologies, enabling your AI companion to execute dynamic tasks in an isolated sandbox and adapt to interactions over time without the risk of unverified or hallucinated destructive actions, fostering a trustworthy human-AI system.',
+        features: ['Multi-tier memory structure', 'Human-in-the-loop action lifecycle', 'Model Context Protocol (MCP)', 'Isolated sandbox execution'],
+        challenges: 'Building a secure and reliable autonomous agent requires careful consideration of safety, context management, and tool integration. The framework must be able to handle complex tasks while ensuring that the agent operates within safe boundaries.',
+        learnings: 'I learned about the importance of safety and security in autonomous systems, as well as the need for careful consideration of context management and tool integration. And working with MCP protocol was a great experience.'
+      }
+    },
+    {
       id: 1,
       title: 'Adaptive RAG',
       subtitle: 'Knowledge Graph-Enhanced RAG System',
@@ -33,7 +51,7 @@ const Projects = () => {
       size: 'col-md-8', // Wide Card
       layout: 'horizontal', // Image left, text right
       image: '/adaptive.png',
-      technologies: ['FastAPI', 'LangChain','Langgraph', 'Gemini', 'FAISS'],
+      technologies: ['FastAPI', 'LangChain', 'Langgraph', 'Gemini', 'FAISS'],
       githubUrl: 'https://github.com/Meetvaghela-code/AdaptiveRag',
       featured: true,
       details: {
@@ -155,7 +173,7 @@ const Projects = () => {
 
   return (
     <div className="container py-5" style={{ maxWidth: '1200px' }}>
-      
+
       {/* --- HERO HEADER --- */}
       <div className="mb-5 fade-up text-center text-md-start">
         <h1 className="fw-bold mb-2 display-4" style={{ letterSpacing: '-0.02em' }}>Projects</h1>
@@ -163,16 +181,16 @@ const Projects = () => {
           A collection of high-impact AI/ML applications and full-stack engineering work.
         </p>
       </div>
-      
+
       {/* --- BENTO GRID --- */}
       <div className="row g-4">
         {projectList.map((project, index) => (
           <div key={project.id} className={`${project.size} fade-up`} style={{ animationDelay: `${index * 0.1}s` }}>
-            <div 
+            <div
               className="apple-card h-100 overflow-hidden cursor-pointer border-0"
               onClick={() => handleProjectClick(project)}
-              style={{ 
-                cursor: 'pointer', 
+              style={{
+                cursor: 'pointer',
                 minHeight: '320px',
                 background: 'white',
                 position: 'relative',
@@ -189,13 +207,13 @@ const Projects = () => {
             >
               {/* Internal Layout Logic */}
               <div className={`d-flex h-100 ${project.layout === 'horizontal' ? 'flex-column flex-md-row' : 'flex-column'}`}>
-                
+
                 {/* Image Section */}
-                <div 
+                <div
                   className={`${project.layout === 'horizontal' ? 'col-md-6 order-md-2' : 'col-12'} position-relative overflow-hidden`}
                   style={{ minHeight: '200px' }}
                 >
-                  <div 
+                  <div
                     style={{
                       width: '100%',
                       height: '100%',
@@ -231,8 +249,8 @@ const Projects = () => {
                   <div className="d-flex align-items-center justify-content-between mt-4">
                     <div className="d-flex flex-wrap gap-1">
                       {project.technologies.slice(0, 3).map((tech, i) => (
-                        <span 
-                          key={i} 
+                        <span
+                          key={i}
                           className="badge bg-secondary bg-opacity-10 text-secondary border fw-normal px-2 py-1"
                           style={{ fontSize: '0.7rem', borderRadius: '6px' }}
                         >
@@ -253,9 +271,9 @@ const Projects = () => {
       </div>
 
       {/* --- PROJECT DETAILS MODAL (iOS Sheet Style) --- */}
-      <Modal 
-        show={showModal} 
-        onHide={() => setShowModal(false)} 
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
         centered
         size="lg"
         contentClassName="border-0 bg-transparent"
@@ -263,10 +281,10 @@ const Projects = () => {
         animation={true}
       >
         <div className="apple-card p-0 overflow-hidden shadow-2xl" style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
-          
+
           {/* Header Image Area */}
           <div className="position-relative" style={{ height: '200px' }}>
-            <div 
+            <div
               style={{
                 width: '100%',
                 height: '100%',
@@ -276,8 +294,8 @@ const Projects = () => {
               }}
             />
             <div className="position-absolute top-0 end-0 m-3">
-              <button 
-                onClick={() => setShowModal(false)} 
+              <button
+                onClick={() => setShowModal(false)}
                 className="btn btn-light rounded-circle p-2 shadow-sm"
                 style={{ width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
@@ -285,7 +303,7 @@ const Projects = () => {
               </button>
             </div>
             {/* Title Overlay */}
-            <div 
+            <div
               className="position-absolute bottom-0 start-0 w-100 p-4"
               style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}
             >
@@ -314,7 +332,7 @@ const Projects = () => {
                       ))}
                     </ul>
                   </div>
-                  
+
                   <div className="col-md-5">
                     <div className="p-4 bg-light rounded-4 mb-4">
                       <h6 className="fw-bold text-uppercase small text-secondary mb-3">Tech Stack</h6>
@@ -326,14 +344,14 @@ const Projects = () => {
                         ))}
                       </div>
                     </div>
-                    
+
                     <div className="mb-4">
-                        <h6 className="fw-bold small text-secondary">Challenges</h6>
-                        <p className="small text-muted">{selectedProject.details.challenges}</p>
+                      <h6 className="fw-bold small text-secondary">Challenges</h6>
+                      <p className="small text-muted">{selectedProject.details.challenges}</p>
                     </div>
                     <div>
-                        <h6 className="fw-bold small text-secondary">Key Learnings</h6>
-                        <p className="small text-muted">{selectedProject.details.learnings}</p>
+                      <h6 className="fw-bold small text-secondary">Key Learnings</h6>
+                      <p className="small text-muted">{selectedProject.details.learnings}</p>
                     </div>
                   </div>
                 </div>
@@ -343,10 +361,10 @@ const Projects = () => {
 
           {/* Footer Action */}
           <div className="p-4 bg-light border-top text-end">
-            <a 
-              href={selectedProject?.githubUrl} 
-              target="_blank" 
-              rel="noreferrer" 
+            <a
+              href={selectedProject?.githubUrl}
+              target="_blank"
+              rel="noreferrer"
               className="btn btn-dark rounded-pill px-4 py-2 fw-medium d-inline-flex align-items-center gap-2"
             >
               <Github /> View Source Code
