@@ -112,15 +112,14 @@ const About = () => {
             <span className="text-secondary">agentic workflows.</span>
           </h1>
           <p className="lead text-secondary mb-4" style={{ lineHeight: '1.7', fontSize: '1.15rem' }}>
-            I’m a final-year <strong>B.Tech </strong> student specializing in Information Technology.
-            Currently, I am deeply focused on building advanced <strong>RAG agents</strong> and autonomous workflows using <strong>LangChain</strong> and <strong>LangGraph</strong>, while leveraging my foundation in <strong>TensorFlow</strong> and Computer Vision.
+            An <strong>AI/ML Engineer</strong> with <strong>6 months of hands-on industry experience</strong> building production-ready intelligent systems. I specialize in developing <strong>agentic LLM applications</strong>, <strong>RAG pipelines</strong>, and scalable ML solutions using <strong>LangChain</strong>, <strong>LangGraph</strong>, <strong>FastAPI</strong>, and <strong>n8n</strong>. With real-world internship experience in automation workflows and modern AI tooling, I build intelligent agentic assistants focused on practical impact and scalable deployment.
           </p>
           <div className="d-flex gap-2 flex-wrap">
             <div className="d-flex align-items-center gap-2 px-3 py-2 bg-white rounded-3 border">
               <span>📍</span> <span className="small fw-bold">Vadodara, India</span>
             </div>
             <div className="d-flex align-items-center gap-2 px-3 py-2 bg-white rounded-3 border">
-              <span>🎓</span> <span className="small fw-bold">B.Tech (Current)</span>
+              <span>🎓</span> <span className="small fw-bold">B.Tech (2026)</span>
             </div>
             <div className="d-flex align-items-center gap-2 px-3 py-2 bg-white rounded-3 border">
               <span>💼</span> <span className="small fw-bold">Open for Work</span>
