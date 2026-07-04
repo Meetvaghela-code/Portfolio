@@ -3,7 +3,6 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
-import nodemailer from 'nodemailer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,16 +16,7 @@ app.use(cors());
 // Serve static files from the Vite build directory (dist)
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Configure Nodemailer transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail', 
-  auth: {
-    user: process.env.EMAIL_USER, 
-    pass: process.env.EMAIL_PASS, 
-  },
-});
-
-// Contact Route
+// Contact Route using Web3Forms (HTTP API)
 app.post('/api/contact', async (req, res) => {
   const { name, email, subject, message } = req.body;
 
@@ -34,24 +24,36 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ error: 'All fields are required.' });
   }
 
-  const mailOptions = {
-    from: email,
-    to: process.env.EMAIL_USER, // Send to your own email address
-    subject: `Portfolio Contact: ${subject}`,
-    text: `You have received a new message from your portfolio contact form.\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-    html: `
-      <h3>New Contact Form Submission</h3>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Subject:</strong> ${subject}</p>
-      <h4>Message:</h4>
-      <p>${message}</p>
-    `,
-  };
+  const apiKey = process.env.WEB3FORMS_ACCESS_KEY;
+  
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Web3Forms access key is missing on the server.' });
+  }
 
   try {
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ success: true, message: 'Email sent successfully!' });
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        access_key: apiKey,
+        name: name,
+        email: email,
+        subject: `Portfolio Contact: ${subject}`,
+        message: message // Web3Forms automatically formats the email beautifully with these fields
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      res.status(200).json({ success: true, message: 'Email sent successfully!' });
+    } else {
+      console.error('Web3Forms error:', data);
+      res.status(500).json({ success: false, error: 'Failed to send email via Web3Forms.' });
+    }
   } catch (error) {
     console.error('Error sending email:', error);
     res.status(500).json({ success: false, error: 'Failed to send email.' });
