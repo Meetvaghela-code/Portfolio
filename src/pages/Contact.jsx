@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import Lottie from 'lottie-react';
+import ScrollReveal from '../components/ScrollReveal';
+import GlowCard from '../components/GlowCard';
 
-// --- Inline SVG Icons (No external dependencies) ---
+// --- Inline SVG Icons ---
 const Envelope = ({ size = 20 }) => (
   <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
@@ -60,6 +62,15 @@ const CheckCircle = ({ size = 20 }) => (
 );
 
 const Contact = () => {
+  const [lottieData, setLottieData] = useState(null);
+
+  useEffect(() => {
+    fetch('/Help Center.json')
+      .then(res => res.json())
+      .then(data => setLottieData(data))
+      .catch(err => console.log('Lottie file not found', err));
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -77,29 +88,26 @@ const Contact = () => {
       title: 'Email',
       value: 'meetv8540@gmail.com',
       href: 'mailto:meetv8540@gmail.com',
-      color: '#0071e3'
     },
     {
       icon: Phone,
       title: 'Phone',
       value: '+1 (555) 123-4567',
       href: 'tel:+15551234567',
-      color: '#0071e3'
     },
     {
       icon: GeoAlt,
       title: 'Location',
       value: 'Vadodara, India',
       href: 'https://maps.google.com/?q=Vadodara,India',
-      color: '#0071e3'
     }
   ];
 
   const socialLinks = [
-    { icon: Github, name: 'GitHub', url: 'https://github.com/Meetvaghela-code', color: '#333' },
-    { icon: Linkedin, name: 'LinkedIn', url: 'https://linkedin.com/in/vaghelameet', color: '#0077b5' },
-    { icon: Twitter, name: 'Twitter', url: 'https://twitter.com/', color: '#1da1f2' },
-    { icon: Instagram, name: 'Instagram', url: 'https://instagram.com/meett.vaghela', color: '#e4405f' }
+    { icon: Github, name: 'GitHub', url: 'https://github.com/Meetvaghela-code' },
+    { icon: Linkedin, name: 'LinkedIn', url: 'https://linkedin.com/in/vaghelameet' },
+    { icon: Twitter, name: 'Twitter', url: 'https://twitter.com/' },
+    { icon: Instagram, name: 'Instagram', url: 'https://instagram.com/meett.vaghela' }
   ];
 
   const validateForm = () => {
@@ -141,14 +149,28 @@ const Contact = () => {
   };
 
   return (
-    <div className="container py-5 fade-up" style={{ maxWidth: '1000px' }}>
+    <div className="container py-5 fade-up" style={{ maxWidth: '1000px', marginTop: '25px' }}>
       
-      {/* Header */}
-      <div className="mb-5 text-center text-lg-start">
-        <h1 className="fw-bold display-5 mb-3">Get in Touch</h1>
-        <p className="lead text-secondary" style={{ maxWidth: '600px' }}>
-          I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology.
-        </p>
+      {/* Header & Animation */}
+      <div className="row align-items-center mb-5">
+        <div className="col-lg-7 text-center text-lg-start mb-4 mb-lg-0">
+          <ScrollReveal direction="up" delay={0}>
+            <div className="tracked-sub mb-2" style={{ color: 'var(--accent-color)' }}>CONTACT</div>
+            <h1 className="fw-bold display-5 mb-3">Get in Touch</h1>
+            <p className="lead mx-auto mx-lg-0" style={{ maxWidth: '600px', color: 'var(--text-secondary)' }}>
+              I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology.
+            </p>
+          </ScrollReveal>
+        </div>
+        <div className="col-lg-5">
+          <ScrollReveal direction="left" delay={50}>
+            <div className="d-flex justify-content-center justify-content-lg-end align-items-center" style={{ height: '350px' }}>
+              {lottieData && (
+                <Lottie animationData={lottieData} loop={true} style={{ width: '100%', height: '100%', maxWidth: '450px' }} />
+              )}
+            </div>
+          </ScrollReveal>
+        </div>
       </div>
 
       <div className="row g-5">
@@ -156,149 +178,179 @@ const Contact = () => {
         {/* Left Column: Info & Socials */}
         <div className="col-lg-4">
           <div className="d-flex flex-column gap-4">
-            
+
             {/* Contact Info Cards */}
             <div className="d-flex flex-column gap-3">
               {contactInfo.map((info, index) => (
-                <a 
-                  key={index}
-                  href={info.href}
-                  target={info.href.startsWith('http') ? '_blank' : '_self'}
-                  rel="noopener noreferrer"
-                  className="apple-card p-3 d-flex align-items-center gap-3 text-decoration-none"
-                  style={{ transition: 'transform 0.2s ease', color: 'inherit' }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                >
-                  <div className="bg-light rounded-circle p-3 d-flex align-items-center justify-content-center" style={{ color: info.color }}>
-                    <info.icon size={20} />
-                  </div>
-                  <div>
-                    <h6 className="mb-0 fw-bold small text-uppercase text-secondary">{info.title}</h6>
-                    <span className="fw-medium text-dark">{info.value}</span>
-                  </div>
-                </a>
+                <ScrollReveal key={index} direction="left" delay={index * 100 + 100}>
+                  <GlowCard 
+                    className="apple-card p-3 d-flex align-items-center gap-3 text-decoration-none"
+                    style={{ transition: 'transform 0.2s ease', color: 'inherit', border: '1px solid var(--border-color)' }}
+                  >
+                    <div 
+                      className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                      style={{ 
+                        width: '48px',
+                        height: '48px',
+                        backgroundColor: 'rgba(218, 119, 86, 0.08)',
+                        color: 'var(--accent-color)' 
+                      }}
+                    >
+                      <info.icon size={20} />
+                    </div>
+                    <div>
+                      <h6 className="mb-0 fw-bold small text-uppercase" style={{ color: 'var(--text-muted)', letterSpacing: '0.05em' }}>{info.title}</h6>
+                      <span className="fw-medium" style={{ color: 'var(--text-primary)' }}>{info.value}</span>
+                    </div>
+                  </GlowCard>
+                </ScrollReveal>
               ))}
             </div>
 
             {/* Social Links */}
-            <div className="apple-card p-4">
-              <h6 className="fw-bold mb-3 small text-uppercase text-secondary">Follow Me</h6>
-              <div className="d-flex gap-3 justify-content-start">
-                {socialLinks.map((social, index) => (
-                  <a 
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center"
-                    style={{ width: '45px', height: '45px', transition: 'all 0.2s ease' }}
-                    title={social.name}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = social.color;
-                        e.currentTarget.style.color = 'white';
-                        e.currentTarget.style.transform = 'translateY(-3px)';
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '#f8f9fa';
-                        e.currentTarget.style.color = '#212529';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                    }}
-                  >
-                    <social.icon size={18} />
-                  </a>
-                ))}
-              </div>
-            </div>
+            <ScrollReveal direction="left" delay={400}>
+              <GlowCard className="apple-card p-4" style={{ border: '1px solid var(--border-color)' }}>
+                <h6 className="tracked-sub mb-3" style={{ color: 'var(--text-muted)' }}>Follow Me</h6>
+                <div className="d-flex gap-3 justify-content-start">
+                  {socialLinks.map((social, index) => (
+                    <a 
+                      key={index}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn rounded-circle p-0 d-flex align-items-center justify-content-center"
+                      style={{ 
+                        width: '45px', 
+                        height: '45px', 
+                        transition: 'all 0.25s ease',
+                        backgroundColor: 'var(--border-color)',
+                        color: 'var(--text-secondary)',
+                        border: '1px solid var(--border-light)'
+                      }}
+                      title={social.name}
+                      onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = 'var(--accent-color)';
+                          e.currentTarget.style.color = 'white';
+                          e.currentTarget.style.transform = 'translateY(-3px)';
+                          e.currentTarget.style.borderColor = 'var(--accent-color)';
+                      }}
+                      onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'var(--border-color)';
+                          e.currentTarget.style.color = 'var(--text-secondary)';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.borderColor = 'var(--border-light)';
+                      }}
+                    >
+                      <social.icon size={18} />
+                    </a>
+                  ))}
+                </div>
+              </GlowCard>
+            </ScrollReveal>
 
           </div>
         </div>
 
         {/* Right Column: Contact Form */}
         <div className="col-lg-8">
-          <div className="apple-card p-4 p-md-5">
-            <h4 className="fw-bold mb-4">Send a Message</h4>
-            
-            {submitStatus && (
-              <div className={`alert ${submitStatus === 'success' ? 'alert-success' : 'alert-danger'} d-flex align-items-center gap-2 mb-4`} role="alert">
-                {submitStatus === 'success' ? <CheckCircle /> : null}
-                {submitStatus === 'success' ? "Message sent successfully!" : "Something went wrong. Please try again."}
-              </div>
-            )}
+          <ScrollReveal direction="right" delay={200}>
+            <GlowCard className="apple-card p-4 p-md-5" style={{ border: '1px solid var(--border-color)' }}>
+              <h4 className="fw-bold mb-4">Send a Message</h4>
+              
+              {submitStatus && (
+                <div 
+                  className={`alert d-flex align-items-center gap-2 mb-4`} 
+                  role="alert"
+                  style={{
+                    backgroundColor: submitStatus === 'success' ? 'rgba(76, 140, 74, 0.08)' : 'rgba(200, 75, 65, 0.08)',
+                    borderColor: submitStatus === 'success' ? 'rgba(76, 140, 74, 0.2)' : 'rgba(200, 75, 65, 0.2)',
+                    color: submitStatus === 'success' ? '#4C8C4A' : '#C84B41',
+                    borderRadius: 'var(--radius-md)'
+                  }}
+                >
+                  {submitStatus === 'success' ? <CheckCircle /> : null}
+                  {submitStatus === 'success' ? "Message sent successfully!" : "Something went wrong. Please try again."}
+                </div>
+              )}
 
-            <form onSubmit={handleSubmit}>
-              <div className="row g-3">
-                <div className="col-md-6">
-                  <div className="form-group mb-3">
-                    <label className="form-label small fw-bold text-secondary text-uppercase">Name</label>
-                    <input 
-                      type="text" 
-                      name="name"
-                      className={`form-control p-3 bg-light border-0 rounded-3 ${errors.name ? 'is-invalid' : ''}`}
-                      placeholder="Your Name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                    />
-                    {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+              <form onSubmit={handleSubmit}>
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <div className="form-group mb-3">
+                      <label className="form-label small fw-bold text-uppercase" style={{ color: 'var(--text-muted)', letterSpacing: '0.04em', fontSize: '0.75rem' }}>Name</label>
+                      <input 
+                        type="text" 
+                        name="name"
+                        className={`form-control p-3 border-0 rounded-3 ${errors.name ? 'is-invalid' : ''}`}
+                        style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-primary)', borderRadius: 'var(--radius-md)' }}
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                      />
+                      {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group mb-3">
+                      <label className="form-label small fw-bold text-uppercase" style={{ color: 'var(--text-muted)', letterSpacing: '0.04em', fontSize: '0.75rem' }}>Email</label>
+                      <input 
+                        type="email" 
+                        name="email"
+                        className={`form-control p-3 border-0 rounded-3 ${errors.email ? 'is-invalid' : ''}`}
+                        style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-primary)', borderRadius: 'var(--radius-md)' }}
+                        placeholder="name@example.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                      />
+                      {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                    </div>
                   </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="form-group mb-3">
-                    <label className="form-label small fw-bold text-secondary text-uppercase">Email</label>
-                    <input 
-                      type="email" 
-                      name="email"
-                      className={`form-control p-3 bg-light border-0 rounded-3 ${errors.email ? 'is-invalid' : ''}`}
-                      placeholder="name@example.com"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                    />
-                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-                  </div>
+
+                <div className="form-group mb-3">
+                  <label className="form-label small fw-bold text-uppercase" style={{ color: 'var(--text-muted)', letterSpacing: '0.04em', fontSize: '0.75rem' }}>Subject</label>
+                  <input 
+                    type="text" 
+                    name="subject"
+                    className={`form-control p-3 border-0 rounded-3 ${errors.subject ? 'is-invalid' : ''}`}
+                    style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-primary)', borderRadius: 'var(--radius-md)' }}
+                    placeholder="What's this about?"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                  />
+                  {errors.subject && <div className="invalid-feedback">{errors.subject}</div>}
                 </div>
-              </div>
 
-              <div className="form-group mb-3">
-                <label className="form-label small fw-bold text-secondary text-uppercase">Subject</label>
-                <input 
-                  type="text" 
-                  name="subject"
-                  className={`form-control p-3 bg-light border-0 rounded-3 ${errors.subject ? 'is-invalid' : ''}`}
-                  placeholder="What's this about?"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                />
-                {errors.subject && <div className="invalid-feedback">{errors.subject}</div>}
-              </div>
+                <div className="form-group mb-4">
+                  <label className="form-label small fw-bold text-uppercase" style={{ color: 'var(--text-muted)', letterSpacing: '0.04em', fontSize: '0.75rem' }}>Message</label>
+                  <textarea 
+                    name="message"
+                    rows="5"
+                    className={`form-control p-3 border-0 rounded-3 ${errors.message ? 'is-invalid' : ''}`}
+                    style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-primary)', borderRadius: 'var(--radius-md)', resize: 'vertical' }}
+                    placeholder="Your message..."
+                    value={formData.message}
+                    onChange={handleInputChange}
+                  ></textarea>
+                  {errors.message && <div className="invalid-feedback">{errors.message}</div>}
+                </div>
 
-              <div className="form-group mb-4">
-                <label className="form-label small fw-bold text-secondary text-uppercase">Message</label>
-                <textarea 
-                  name="message"
-                  rows="5"
-                  className={`form-control p-3 bg-light border-0 rounded-3 ${errors.message ? 'is-invalid' : ''}`}
-                  placeholder="Your message..."
-                  value={formData.message}
-                  onChange={handleInputChange}
-                ></textarea>
-                {errors.message && <div className="invalid-feedback">{errors.message}</div>}
-              </div>
-
-              <button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="btn btn-apple w-100 py-3 d-flex align-items-center justify-content-center gap-2"
-              >
-                {isSubmitting ? (
-                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                ) : (
-                  <>
-                    <Send size={18} /> Send Message
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="btn btn-apple w-100 py-3 d-flex align-items-center justify-content-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  ) : (
+                    <>
+                      <Send size={18} /> Send Message
+                    </>
+                  )}
+                </button>
+              </form>
+            </GlowCard>
+          </ScrollReveal>
         </div>
 
       </div>

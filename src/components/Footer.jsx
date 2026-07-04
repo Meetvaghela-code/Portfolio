@@ -32,7 +32,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="mt-auto apple-footer border-top border-light position-relative overflow-hidden">
+    <footer className="mt-auto apple-footer border-top position-relative overflow-hidden">
       <div className="container py-4" style={{ maxWidth: '1000px' }}>
         
         {/* Main Footer Content */}
@@ -40,22 +40,27 @@ const Footer = () => {
           
           {/* Brand Column */}
           <div className="col-md-4">
-            <h6 className="fw-bold text-dark mb-2">Meet Vaghela<span style={{ color: '#0071e3' }}>.</span></h6>
-            <p className="small text-secondary mb-0" style={{ maxWidth: '280px', lineHeight: '1.5', fontSize: '0.85rem' }}>
+            <h6 
+              className="fw-bold mb-2" 
+              style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem' }}
+            >
+              Meet Vaghela<span style={{ color: 'var(--accent-color, #DA7756)' }}>.</span>
+            </h6>
+            <p className="small mb-0" style={{ maxWidth: '280px', lineHeight: '1.6', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
               Building intelligent web applications and AI solutions with a focus on design.
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="col-6 col-md-3">
-            <h6 className="fw-bold text-uppercase text-secondary mb-2" style={{ fontSize: '0.7rem', letterSpacing: '0.05em' }}>Navigate</h6>
+            <h6 className="tracked-sub mb-2" style={{ color: 'var(--text-muted)' }}>Navigate</h6>
             <ul className="list-unstyled d-flex flex-column gap-1 mb-0">
               {['Home', 'Projects', 'About', 'Contact'].map((item) => (
                 <li key={item}>
                   <NavLink 
                     to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                    className="text-decoration-none small text-muted nav-hover"
-                    style={{ fontSize: '0.85rem' }}
+                    className="text-decoration-none small nav-hover"
+                    style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}
                   >
                     {item}
                   </NavLink>
@@ -66,15 +71,15 @@ const Footer = () => {
 
           {/* Connect Column */}
           <div className="col-6 col-md-3">
-            <h6 className="fw-bold text-uppercase text-secondary mb-2" style={{ fontSize: '0.7rem', letterSpacing: '0.05em' }}>Connect</h6>
+            <h6 className="tracked-sub mb-2" style={{ color: 'var(--text-muted)' }}>Connect</h6>
             <div className="d-flex gap-3">
-              <a href="https://github.com/Meetvaghela-code" target="_blank" rel="noreferrer" className="text-secondary icon-hover" aria-label="GitHub">
+              <a href="https://github.com/Meetvaghela-code" target="_blank" rel="noreferrer" className="icon-hover" style={{ color: 'var(--text-secondary)' }} aria-label="GitHub">
                 <Github />
               </a>
-              <a href="https://linkedin.com/in/vaghelameet" target="_blank" rel="noreferrer" className="text-secondary icon-hover" aria-label="LinkedIn">
+              <a href="https://linkedin.com/in/vaghelameet" target="_blank" rel="noreferrer" className="icon-hover" style={{ color: 'var(--text-secondary)' }} aria-label="LinkedIn">
                 <Linkedin />
               </a>
-              <a href="mailto:meetv8540@gmail.com" className="text-secondary icon-hover" aria-label="Email">
+              <a href="mailto:meetv8540@gmail.com" className="icon-hover" style={{ color: 'var(--text-secondary)' }} aria-label="Email">
                 <Envelope />
               </a>
             </div>
@@ -82,20 +87,26 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <hr className="my-3" style={{ opacity: 0.08 }} />
+        <hr className="my-3" style={{ opacity: 0.06, borderColor: 'var(--text-secondary)' }} />
 
         {/* Copyright & Scroll Top */}
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
           <div className="text-center text-md-start">
-            <p className="text-secondary mb-0" style={{ fontSize: '0.75rem' }}>
+            <p className="mb-0" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
               &copy; {new Date().getFullYear()} Meet Vaghela. All rights reserved.
             </p>
           </div>
 
           <button 
             onClick={scrollToTop} 
-            className="btn btn-light rounded-circle p-0 shadow-sm d-flex align-items-center justify-content-center hover-lift"
-            style={{ width: '32px', height: '32px', border: '1px solid rgba(0,0,0,0.05)' }}
+            className="btn rounded-circle p-0 d-flex align-items-center justify-content-center hover-lift"
+            style={{ 
+              width: '32px', 
+              height: '32px', 
+              border: '1px solid var(--border-color)',
+              backgroundColor: 'var(--bg-card)',
+              color: 'var(--text-secondary)'
+            }}
             aria-label="Scroll to top"
           >
             <ArrowUp size={14} />
@@ -105,29 +116,28 @@ const Footer = () => {
 
       <style>{`
         .apple-footer {
-          background: rgba(255, 255, 255, 0.8);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
+          background: var(--card-bg, #FDFCFA);
+          border-top-color: var(--border-color) !important;
         }
         .nav-hover {
           transition: color 0.2s ease;
         }
         .nav-hover:hover {
-          color: #0071e3 !important;
+          color: var(--accent-color, #DA7756) !important;
         }
         .icon-hover {
           transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s;
         }
         .icon-hover:hover {
           transform: translateY(-2px);
-          color: #1d1d1f !important;
+          color: var(--accent-color, #DA7756) !important;
         }
         .hover-lift {
           transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .hover-lift:hover {
           transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+          box-shadow: var(--shadow-hover) !important;
         }
       `}</style>
     </footer>

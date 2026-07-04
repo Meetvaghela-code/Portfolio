@@ -1,58 +1,79 @@
-/* App.css - The Premium Apple Design System with Dark Mode */
+/* ============================================
+   App.css — Claude Design System
+   Warm, editorial, premium aesthetic
+   ============================================ */
 
 :root {
   /* --- LIGHT MODE (Default) --- */
-  --bg-color: #F5F5F7;
-  --text-primary: #1d1d1f;
-  --text-secondary: #86868b;
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --border-color: rgba(0, 0, 0, 0.05);
-  --nav-bg: transparent; /* Removed background for transparent header */
-  --btn-bg: #1d1d1f;
-  --btn-text: #ffffff;
-  
-  /* Shared Constants */
-  --accent-color: #0071e3;
-  --radius-xl: 24px;
-  --radius-lg: 18px;
-  --radius-md: 12px;
-  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.08);
-  --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --bg-color: #F5F1EB;
+  --text-primary: #2D2B27;
+  --text-secondary: #6B6560;
+  --card-bg: #FDFCFA;
+  --border-color: rgba(45, 43, 39, 0.08);
+  --nav-bg: transparent;
+  --btn-bg: #2D2B27;
+  --btn-text: #FDFCFA;
+
+  /* Claude Accent */
+  --accent-color: #DA7756;
+  --accent-hover: #C4613F;
+  --accent-glow: rgba(218, 119, 86, 0.12);
+
+  /* Radii */
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+
+  /* Shadows — subtle warmth */
+  --shadow-soft: 0 2px 12px rgba(45, 43, 39, 0.04);
+  --shadow-hover: 0 8px 30px rgba(45, 43, 39, 0.08);
+
+  /* Font Stack */
+  --font-serif: 'Playfair Display', 'Georgia', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-stack: var(--font-sans);
 }
 
 /* --- DARK MODE OVERRIDES --- */
 [data-theme='dark'] {
-  --bg-color: #000000;
-  --text-primary: #f5f5f7;
-  --text-secondary: #a1a1a6;
-  --card-bg: rgba(28, 28, 30, 0.8);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --nav-bg: transparent; /* Removed background for transparent header */
-  --btn-bg: #ffffff;
-  --btn-text: #000000;
-  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.3);
-  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.5);
+  --bg-color: #1A1915;
+  --text-primary: #E8E4DE;
+  --text-secondary: #B5AFA5;
+  --card-bg: #23211C;
+  --border-color: rgba(232, 228, 222, 0.08);
+  --nav-bg: transparent;
+  --btn-bg: #E8E4DE;
+  --btn-text: #1A1915;
+  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.2);
+  --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* 1. Global Reset & Typography */
+/* 1. Global Typography */
 body {
   background-color: var(--bg-color);
   font-family: var(--font-stack);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.5;
+  line-height: 1.65;
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth Theme Transition */
+  transition: background-color 0.4s ease, color 0.3s ease;
 }
 
-/* --- RESTORED TYPOGRAPHY RULES --- */
+/* Serif headings — the soul of Claude style */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+  font-weight: 600;
   margin-bottom: 0.5rem;
+}
+
+/* h6 often used for labels — keep sans-serif */
+h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 p, .lead, li {
@@ -68,35 +89,61 @@ a {
   text-decoration: none;
   transition: color 0.2s ease;
 }
-/* -------------------------------- */
 
 /* 2. Premium Text Selection */
 ::selection {
-  background: rgba(0, 113, 227, 0.3);
-  color: white;
+  background: rgba(218, 119, 86, 0.25);
+  color: var(--text-primary);
 }
 
-/* 3. Custom Scrollbar (Webkit) */
+/* 3. Minimal Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--text-secondary);
+  background: rgba(45, 43, 39, 0.15);
   border-radius: 10px;
-  opacity: 0.5;
-  border: 3px solid transparent;
-  background-clip: content-box;
+}
+[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: rgba(232, 228, 222, 0.12);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-primary);
-  border: 3px solid transparent;
-  background-clip: content-box;
+  background: var(--text-secondary);
 }
 
-/* 4. Film Grain Overlay */
+/* 4. Subtle Warm Background */
+.claude-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: var(--bg-color);
+  transition: background 0.4s ease;
+}
+
+/* Warm radial glow — very subtle */
+.claude-bg::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(218, 119, 86, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+[data-theme='dark'] .claude-bg::after {
+  background: radial-gradient(circle, rgba(218, 119, 86, 0.03) 0%, transparent 70%);
+}
+
+/* 5. Film Grain — very subtle texture */
 .grain-overlay {
   position: fixed;
   top: 0;
@@ -105,137 +152,104 @@ a {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.25; /* Reduced slightly for dark mode clarity */
+  opacity: 0.12;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
 }
 
-/* 5. Aurora Background Blobs */
-.aurora-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  overflow: hidden;
-  background: var(--bg-color);
-  transition: background 0.3s ease;
-}
-
-.aurora-blob {
-  position: absolute;
-  filter: blur(80px);
-  opacity: 0.4;
-  border-radius: 50%;
-  animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Dark Mode specific blob adjustments (Optional: makes them subtle) */
-[data-theme='dark'] .aurora-blob {
-  opacity: 0.15; /* Dimmer blobs in dark mode so text is readable */
-  filter: blur(100px);
-}
-
-.blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: #e0f2fe; animation-delay: 0s; }
-[data-theme='dark'] .blob-1 { background: #1e3a8a; } /* Dark Blue in Dark Mode */
-
-.blob-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: #f3e8ff; animation-delay: -5s; }
-[data-theme='dark'] .blob-2 { background: #581c87; } /* Dark Purple in Dark Mode */
-
-.blob-3 { top: 40%; left: 30%; width: 40vw; height: 40vw; background: #fce7f3; animation-delay: -10s; opacity: 0.3; }
-[data-theme='dark'] .blob-3 { background: #be185d; } /* Dark Pink in Dark Mode */
-
-@keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, 20px) scale(1.05); }
-  100% { transform: translate(-20px, -20px) scale(0.95); }
-}
-
-/* 6. Apple Card Style (Glassmorphism) */
+/* 6. Claude Card — Clean bordered, no blur */
 .apple-card {
   background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-soft);
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
   color: var(--text-primary);
 }
 
 .apple-card:hover {
-  transform: translateY(-5px) scale(1.01);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
-  border-color: var(--accent-color);
+  border-color: rgba(218, 119, 86, 0.2);
 }
 
-/* 7. Apple Button Style */
+/* 7. Claude Buttons */
 .btn-apple {
   background-color: var(--btn-bg);
   color: var(--btn-text);
-  border-radius: 50px;
+  border-radius: var(--radius-md);
   padding: 12px 28px;
   font-size: 0.95rem;
+  font-family: var(--font-sans);
   font-weight: 500;
   border: none;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: var(--shadow-soft);
 }
 
 .btn-apple:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
   opacity: 0.9;
   color: var(--btn-text);
 }
 
 .btn-apple-secondary {
-  background-color: var(--card-bg);
+  background-color: transparent;
   color: var(--text-primary);
-  border-radius: 50px;
+  border-radius: var(--radius-md);
   padding: 12px 28px;
+  font-family: var(--font-sans);
   font-weight: 500;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   transition: all 0.3s ease;
 }
 
 .btn-apple-secondary:hover {
-  background-color: var(--bg-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  background-color: var(--accent-glow);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
   transform: translateY(-1px);
-  color: var(--text-primary);
 }
 
-/* 8. Text Gradients */
+/* 8. Text Gradient — now warm terracotta */
 .text-gradient {
-  background: linear-gradient(135deg, #0071e3 0%, #a855f7 50%, #ec4899 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent-color);
+  -webkit-text-fill-color: var(--accent-color);
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
 }
 
 /* 9. Animations */
 .fade-up {
-  animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: fadeUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(24px);
 }
 
 @keyframes fadeUp {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 10. Navbar Updates for Dark Mode */
+/* 10. Navbar */
 .apple-navbar {
   background: var(--nav-bg) !important;
   border-bottom: none !important;
 }
 
-/* 11. Modal Dark Mode Tweaks */
+/* Add subtle border when scrolled */
+.apple-navbar.scrolled {
+  background: var(--bg-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* 11. Modal Overrides */
 .modal-content {
   background-color: var(--card-bg) !important;
   color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-xl) !important;
 }
 .modal-header, .modal-footer {
   border-color: var(--border-color) !important;
@@ -248,8 +262,38 @@ a {
   filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-/* 12. Footer Dark Mode Tweaks */
+/* 12. Footer */
 [data-theme='dark'] .apple-footer {
   background: var(--card-bg) !important;
   border-top-color: var(--border-color) !important;
+}
+
+/* ============================================
+   EDITORIAL UTILITY CLASSES
+   ============================================ */
+
+/* Serif italic accent — use on special headings */
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+/* Tracked uppercase subheading */
+.tracked-sub {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+}
+
+/* Warm accent color utility */
+.text-accent {
+  color: var(--accent-color) !important;
+}
+
+/* Warm accent background pill */
+.bg-accent-soft {
+  background-color: var(--accent-glow);
 }

@@ -1,6 +1,8 @@
 import React from 'react';
+import ScrollReveal from '../components/ScrollReveal';
+import GlowCard from '../components/GlowCard';
 
-// --- Inline SVG Icons (No external dependencies) ---
+// --- Inline SVG Icons ---
 const Download = ({ size = 18 }) => (
   <svg width={size} height={size} fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
@@ -91,7 +93,7 @@ const Resume = () => {
       school: "ITM SLS Baroda University",
       location: "Vadodara, India",
       year: "2022 - 2026",
-      gpa: "9.05/10",
+      gpa: "9.20/10",
       description: "Focused on software engineering, algorithms, and web technologies."
     }
   ];
@@ -111,97 +113,113 @@ const Resume = () => {
   ];
 
   return (
-    <div className="container py-5 fade-up" style={{ maxWidth: '1000px' }}>
+    <div className="container py-5 fade-up" style={{ maxWidth: '1000px', marginTop: '25px' }}>
 
       {/* --- HEADER SECTION --- */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5 gap-3">
-        <div>
+        <ScrollReveal direction="up" delay={0}>
+          <div className="tracked-sub mb-2" style={{ color: 'var(--accent-color)' }}>CAREER</div>
           <h1 className="fw-bold mb-1 display-5">Resume</h1>
           <p className="text-secondary mb-0 lead">My professional journey and milestones.</p>
-        </div>
+        </ScrollReveal>
 
-        <a
-          href="public/Resume_update.pdf"
-          download
-          className="btn btn-apple d-flex align-items-center gap-2 shadow-sm"
-        >
-          <Download size={18} />
-          <span>Download CV</span>
-        </a>
+        <ScrollReveal direction="up" delay={100}>
+          <a
+            href="public/Meet_Vaghela_Resume.pdf"
+            download
+            className="btn btn-apple d-flex align-items-center gap-2"
+          >
+            <Download size={18} />
+            <span>Download CV</span>
+          </a>
+        </ScrollReveal>
       </div>
 
       <div className="row g-5">
 
         {/* --- LEFT COLUMN: EXPERIENCE --- */}
         <div className="col-lg-8">
-          <h4 className="mb-4 d-flex align-items-center gap-2 text-primary fw-bold">
-            <Briefcase size={22} /> Experience
-          </h4>
+          <ScrollReveal direction="up" delay={150}>
+            <h4 className="mb-4 d-flex align-items-center gap-2 fw-bold" style={{ color: 'var(--accent-color)' }}>
+              <Briefcase size={22} /> Experience
+            </h4>
+          </ScrollReveal>
 
           <div className="d-flex flex-column gap-4">
             {experienceData.map((item, index) => (
-              <div
-                key={index}
-                className="apple-card p-4 position-relative overflow-hidden"
-                style={{ transition: 'transform 0.2s ease' }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.01)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-              >
-                {/* Connector Line */}
-                {index !== experienceData.length - 1 && (
-                  <div
-                    className="position-absolute d-none d-md-block"
-                    style={{
-                      left: '2rem',
-                      bottom: '-2rem',
-                      width: '2px',
-                      height: '2rem',
-                      background: 'rgba(0,0,0,0.05)',
-                      zIndex: 0
-                    }}
-                  />
-                )}
+              <ScrollReveal key={index} direction="up" delay={index * 100 + 200} className="w-100">
+                <GlowCard
+                  className="apple-card p-4 position-relative overflow-hidden w-100"
+                  style={{ transition: 'transform 0.2s ease', border: '1px solid var(--border-color)' }}
+                >
+                  {/* Connector Line */}
+                  {index !== experienceData.length - 1 && (
+                    <div
+                      className="position-absolute d-none d-md-block"
+                      style={{
+                        left: '2rem',
+                        bottom: '-2rem',
+                        width: '2px',
+                        height: '2rem',
+                        background: 'var(--border-color)',
+                        zIndex: 0
+                      }}
+                    />
+                  )}
 
-                <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start mb-3 gap-2">
-                  <div>
-                    <h5 className="mb-1 fw-bold">{item.role}</h5>
-                    <div className="d-flex align-items-center gap-3 text-secondary small">
-                      <span className="d-flex align-items-center gap-1">
-                        <Briefcase size={12} /> {item.company}
-                      </span>
-                      <span className="d-flex align-items-center gap-1">
-                        <GeoAlt size={12} /> {item.location}
-                      </span>
+                  <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start mb-3 gap-2">
+                    <div>
+                      <h5 className="mb-1 fw-bold" style={{ fontFamily: 'var(--font-serif)' }}>{item.role}</h5>
+                      <div className="d-flex align-items-center gap-3 small" style={{ color: 'var(--text-secondary)' }}>
+                        <span className="d-flex align-items-center gap-1">
+                          <Briefcase size={12} /> {item.company}
+                        </span>
+                        <span className="d-flex align-items-center gap-1">
+                          <GeoAlt size={12} /> {item.location}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <span className="badge bg-light text-dark border rounded-pill px-3 py-2 fw-medium">
-                    {item.date}
-                  </span>
-                </div>
-
-                <p className="mb-2 text-secondary" style={{ fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  {item.description}
-                </p>
-
-                {/* Achievements List */}
-                <ul className="mb-3 text-secondary small ps-3">
-                  {item.achievements.map((achievement, i) => (
-                    <li key={i} className="mb-1">{achievement}</li>
-                  ))}
-                </ul>
-
-                <div className="d-flex flex-wrap gap-2">
-                  {item.tags.map((tag, i) => (
                     <span
-                      key={i}
-                      className="badge bg-secondary bg-opacity-10 text-secondary border fw-normal rounded-pill px-2 py-1"
-                      style={{ fontSize: '0.75rem' }}
+                      className="badge rounded-pill px-3 py-2 fw-medium"
+                      style={{
+                        backgroundColor: 'rgba(218, 119, 86, 0.08)',
+                        color: 'var(--accent-color)',
+                        border: '1px solid rgba(218, 119, 86, 0.15)'
+                      }}
                     >
-                      {tag}
+                      {item.date}
                     </span>
-                  ))}
-                </div>
-              </div>
+                  </div>
+
+                  <p className="mb-2" style={{ fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                    {item.description}
+                  </p>
+
+                  {/* Achievements List */}
+                  <ul className="mb-3 small ps-3" style={{ color: 'var(--text-secondary)' }}>
+                    {item.achievements.map((achievement, i) => (
+                      <li key={i} className="mb-1">{achievement}</li>
+                    ))}
+                  </ul>
+
+                  <div className="d-flex flex-wrap gap-2">
+                    {item.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="badge fw-normal rounded-pill px-2 py-1"
+                        style={{
+                          fontSize: '0.75rem',
+                          backgroundColor: 'var(--border-color)',
+                          color: 'var(--text-secondary)',
+                          border: '1px solid var(--border-light)'
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </GlowCard>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -211,68 +229,93 @@ const Resume = () => {
 
           {/* Education */}
           <div className="mb-5">
-            <h4 className="mb-4 d-flex align-items-center gap-2 text-primary fw-bold">
-              <Mortarboard size={22} /> Education
-            </h4>
+            <ScrollReveal direction="up" delay={200}>
+              <h4 className="mb-4 d-flex align-items-center gap-2 fw-bold" style={{ color: 'var(--accent-color)' }}>
+                <Mortarboard size={22} /> Education
+              </h4>
+            </ScrollReveal>
             {educationData.map((edu, index) => (
-              <div key={index} className="apple-card p-4 mb-3">
-                <h6 className="fw-bold mb-1">{edu.degree}</h6>
-                <p className="mb-1 text-dark fw-medium">{edu.school}</p>
-                <div className="text-secondary small mb-2">{edu.location}</div>
+              <ScrollReveal key={index} direction="up" delay={index * 100 + 250}>
+                <GlowCard className="apple-card p-4 mb-3" style={{ border: '1px solid var(--border-color)' }}>
+                  <h6 className="fw-bold mb-1" style={{ fontFamily: 'var(--font-serif)' }}>{edu.degree}</h6>
+                  <p className="mb-1 fw-medium" style={{ color: 'var(--text-primary)' }}>{edu.school}</p>
+                  <div className="small mb-2" style={{ color: 'var(--text-secondary)' }}>{edu.location}</div>
 
-                <div className="d-flex justify-content-between align-items-center mt-3">
-                  <div className="d-inline-flex align-items-center gap-2 px-2 py-1 bg-light rounded text-secondary small">
-                    <Calendar3 size={12} /> {edu.year}
+                  <div className="d-flex justify-content-between align-items-center mt-3">
+                    <div className="d-inline-flex align-items-center gap-2 px-2 py-1 rounded small" style={{ backgroundColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
+                      <Calendar3 size={12} /> {edu.year}
+                    </div>
+                    <span
+                      className="badge border"
+                      style={{
+                        backgroundColor: 'rgba(76, 140, 74, 0.08)',
+                        color: '#4C8C4A',
+                        borderColor: 'rgba(76, 140, 74, 0.2)'
+                      }}
+                    >
+                      GPA: {edu.gpa}
+                    </span>
                   </div>
-                  <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">
-                    GPA: {edu.gpa}
-                  </span>
-                </div>
-              </div>
+                </GlowCard>
+              </ScrollReveal>
             ))}
           </div>
 
           {/* Certifications */}
           <div className="mb-5">
-            <h4 className="mb-4 d-flex align-items-center gap-2 text-primary fw-bold">
-              <Award size={22} /> Certifications
-            </h4>
-            <div className="apple-card p-3">
-              {certificationsData.map((cert, index) => (
-                <div key={index} className={`d-flex align-items-start gap-3 ${index !== certificationsData.length - 1 ? 'mb-3 border-bottom pb-3' : ''}`}>
-                  <div className="mt-1">
-                    <Award className="text-warning" size={16} />
-                  </div>
-                  <div>
-                    <h6 className="mb-0 fw-bold small">{cert.name}</h6>
-                    <div className="text-secondary small d-flex justify-content-between w-100 gap-3">
-                      <span>{cert.issuer}</span>
-                      <span>{cert.year}</span>
+            <ScrollReveal direction="up" delay={300}>
+              <h4 className="mb-4 d-flex align-items-center gap-2 fw-bold" style={{ color: 'var(--accent-color)' }}>
+                <Award size={22} /> Certifications
+              </h4>
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={350}>
+              <GlowCard className="apple-card p-3" style={{ border: '1px solid var(--border-color)' }}>
+                {certificationsData.map((cert, index) => (
+                  <div key={index} className={`d-flex align-items-start gap-3 ${index !== certificationsData.length - 1 ? 'mb-3 pb-3' : ''}`} style={{ borderBottom: index !== certificationsData.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
+                    <div className="mt-1">
+                      <Award className="text-accent" size={16} />
+                    </div>
+                    <div className="w-100">
+                      <h6 className="mb-0 fw-bold small">{cert.name}</h6>
+                      <div className="small d-flex justify-content-between w-100 gap-3" style={{ color: 'var(--text-muted)' }}>
+                        <span>{cert.issuer}</span>
+                        <span>{cert.year}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </GlowCard>
+            </ScrollReveal>
           </div>
 
           {/* Skills */}
           <div>
-            <h4 className="mb-4 d-flex align-items-center gap-2 text-primary fw-bold">
-              Skills
-            </h4>
-            <div className="apple-card p-4">
-              <div className="d-flex flex-wrap gap-2">
-                {skills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="badge bg-white border text-dark py-2 px-3 rounded-pill fw-medium shadow-sm transition-hover"
-                    style={{ fontSize: '0.85rem' }}
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <ScrollReveal direction="up" delay={400}>
+              <h4 className="mb-4 d-flex align-items-center gap-2 fw-bold" style={{ color: 'var(--accent-color)' }}>
+                Skills
+              </h4>
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={450}>
+              <GlowCard className="apple-card p-4" style={{ border: '1px solid var(--border-color)' }}>
+                <div className="d-flex flex-wrap gap-2">
+                  {skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="badge py-2 px-3 rounded-pill fw-medium"
+                      style={{
+                        fontSize: '0.85rem',
+                        backgroundColor: 'var(--card-bg)',
+                        color: 'var(--text-primary)',
+                        border: '1px solid var(--border-color)',
+                        boxShadow: 'var(--shadow-sm)'
+                      }}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </GlowCard>
+            </ScrollReveal>
           </div>
 
         </div>
