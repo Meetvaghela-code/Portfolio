@@ -66,7 +66,7 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
   }
 
   const apiKey = process.env.WEB3FORMS_ACCESS_KEY;
-  
+
   if (!apiKey) {
     return res.status(500).json({ error: 'Web3Forms access key is missing on the server.' });
   }
@@ -117,8 +117,8 @@ app.post('/api/chat', chatSpeedLimiter, chatRateLimiter, async (req, res) => {
 
   if (!apiKey) {
     // If API key is not configured, fall back to a polite system message
-    return res.json({ 
-      text: "Developer note: The Groq API key is not configured on the server. Please set the GROQ_API_KEY environment variable in your deployment dashboard." 
+    return res.json({
+      text: "Developer note: The Groq API key is not configured on the server. Please set the GROQ_API_KEY environment variable in your deployment dashboard."
     });
   }
 
@@ -141,7 +141,7 @@ app.post('/api/chat', chatSpeedLimiter, chatRateLimiter, async (req, res) => {
             content: `You are Meet Vaghela's AI assistant inside an interactive terminal widget on his portfolio. 
             Here is Meet's background information:
             - About: AI/ML Engineer with 6 months of industry internship experience. He builds production-ready intelligent systems, agentic workflows, and RAG pipelines.
-            - Skills: Python, LangChain, LangGraph, FastAPI, Flask, React.js, Docker, Git, N8N. Core focus on autonomous agents, deep learning, computer vision, and NLP.
+            - Skills: Python, LangChain, LangGraph, Crew AI, Autogen, FastAPI, Flask, React.js, Docker, Git, N8N. Core focus on autonomous agents, deep learning, computer vision, and NLP.
             - Location: Vadodara, Gujarat, India.
             - Education: B.Tech in Computer Science from ITM SLS Baroda University (2022 - 2026), CGPA 9.05/10.
             - Experience:
