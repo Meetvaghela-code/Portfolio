@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import GlowCard from '../components/GlowCard';
 import ScrollReveal from '../components/ScrollReveal';
 import RagVisualizer from '../components/RagVisualizer';
+import { PaperLiftCard } from '../components/ProjectBento';
 
 // --- Inline SVG Icons ---
 const Github = ({ size = 18 }) => (
@@ -78,6 +79,104 @@ const projectLogs = {
     '📊 Frame rate locked at 30fps. Low-latency classification active.',
     '🤖 Gesture Classified: "TAP_INDEX". Executing custom command.'
   ]
+};
+
+const getProjectSketch = (title) => {
+  switch (title) {
+    case 'Apex-Agent':
+      return (
+        <svg viewBox="0 0 1000 300" width="100%" height="100%" preserveAspectRatio="none">
+          <circle cx="200" cy="150" r="40" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <circle cx="500" cy="80" r="50" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <circle cx="500" cy="220" r="50" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <circle cx="800" cy="150" r="40" fill="none" stroke="var(--accent-color)" strokeWidth="4" />
+          <path d="M 240 150 Q 350 115 450 80" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeDasharray="5 5" />
+          <path d="M 240 150 Q 350 185 450 220" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeDasharray="5 5" />
+          <path d="M 550 80 Q 675 115 760 150" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeDasharray="5 5" />
+          <path d="M 550 220 Q 675 185 760 150" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeDasharray="5 5" />
+        </svg>
+      );
+    case 'Adaptive RAG':
+      return (
+        <svg viewBox="0 0 600 300" width="100%" height="100%" preserveAspectRatio="none">
+          <rect x="50" y="100" width="100" height="100" rx="10" fill="none" stroke="var(--text-secondary)" strokeWidth="2" />
+          <rect x="250" y="50" width="100" height="60" rx="10" fill="none" stroke="var(--text-secondary)" strokeWidth="2" />
+          <rect x="250" y="190" width="100" height="60" rx="10" fill="none" stroke="var(--text-secondary)" strokeWidth="2" />
+          <rect x="450" y="100" width="100" height="100" rx="10" fill="none" stroke="var(--accent-color)" strokeWidth="3" />
+          <path d="M 150 150 L 250 80" fill="none" stroke="var(--text-secondary)" strokeWidth="2" />
+          <path d="M 150 150 L 250 220" fill="none" stroke="var(--text-secondary)" strokeWidth="2" />
+          <path d="M 350 80 L 450 150" fill="none" stroke="var(--text-secondary)" strokeWidth="2" />
+          <path d="M 350 220 L 450 150" fill="none" stroke="var(--text-secondary)" strokeWidth="2" />
+        </svg>
+      );
+    case 'YouTube RAG Chatbot':
+      return (
+        <svg viewBox="0 0 400 300" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <line x1="50" y1="150" x2="350" y2="150" stroke="var(--text-secondary)" strokeWidth="4" />
+          <circle cx="100" cy="150" r="10" fill="var(--bg-color)" stroke="var(--accent-color)" strokeWidth="4" />
+          <circle cx="200" cy="150" r="10" fill="var(--bg-color)" stroke="var(--text-secondary)" strokeWidth="4" />
+          <circle cx="300" cy="150" r="10" fill="var(--bg-color)" stroke="var(--text-secondary)" strokeWidth="4" />
+          <rect x="70" y="80" width="60" height="40" fill="none" stroke="var(--accent-color)" strokeWidth="2" strokeDasharray="2 2" />
+        </svg>
+      );
+    case 'Healthcare AI':
+      return (
+        <svg viewBox="0 0 500 300" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <path d="M 50 150 L 150 150 L 170 100 L 210 200 L 250 80 L 290 220 L 320 150 L 450 150" fill="none" stroke="var(--accent-color)" strokeWidth="3" />
+          <circle cx="250" cy="150" r="80" fill="none" stroke="var(--text-secondary)" strokeWidth="1" strokeDasharray="4 4" />
+        </svg>
+      );
+    case 'Webionix Extension':
+      return (
+        <svg viewBox="0 0 500 300" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <rect x="50" y="50" width="300" height="200" rx="5" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <line x1="50" y1="80" x2="350" y2="80" stroke="var(--text-secondary)" strokeWidth="2" />
+          <rect x="380" y="50" width="100" height="150" rx="5" fill="none" stroke="var(--accent-color)" strokeWidth="3" strokeDasharray="5 5" />
+          <path d="M 320 120 L 370 120 L 360 110 M 370 120 L 360 130" fill="none" stroke="var(--accent-color)" strokeWidth="3" />
+        </svg>
+      );
+    case 'AI Doc Assistant':
+      return (
+        <svg viewBox="0 0 400 300" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <rect x="100" y="50" width="80" height="100" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <line x1="120" y1="70" x2="160" y2="70" stroke="var(--text-secondary)" strokeWidth="2" />
+          <line x1="120" y1="90" x2="160" y2="90" stroke="var(--text-secondary)" strokeWidth="2" />
+          <path d="M 220 100 L 280 100" fill="none" stroke="var(--accent-color)" strokeWidth="3" strokeDasharray="4 4" />
+          <polygon points="270,90 290,100 270,110" fill="var(--accent-color)" />
+          <rect x="310" y="50" width="80" height="100" rx="10" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <line x1="310" y1="80" x2="390" y2="80" stroke="var(--text-secondary)" strokeWidth="2" />
+        </svg>
+      );
+    case 'Sentiment Analysis':
+      return (
+        <svg viewBox="0 0 400 300" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <circle cx="100" cy="150" r="40" fill="none" stroke="var(--accent-color)" strokeWidth="3" />
+          <circle cx="85" cy="135" r="5" fill="var(--accent-color)" />
+          <circle cx="115" cy="135" r="5" fill="var(--accent-color)" />
+          <path d="M 80 160 Q 100 180 120 160" fill="none" stroke="var(--accent-color)" strokeWidth="3" />
+          <circle cx="300" cy="150" r="40" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <circle cx="285" cy="135" r="5" fill="var(--text-secondary)" />
+          <circle cx="315" cy="135" r="5" fill="var(--text-secondary)" />
+          <path d="M 280 170 Q 300 150 320 170" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <line x1="160" y1="150" x2="240" y2="150" stroke="var(--text-secondary)" strokeWidth="2" strokeDasharray="4 4" />
+        </svg>
+      );
+    case 'Gesture Recognizer':
+      return (
+        <svg viewBox="0 0 400 300" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <circle cx="200" cy="250" r="10" fill="none" stroke="var(--text-secondary)" strokeWidth="3" />
+          <line x1="200" y1="240" x2="160" y2="150" stroke="var(--text-secondary)" strokeWidth="2" />
+          <line x1="200" y1="240" x2="200" y2="100" stroke="var(--text-secondary)" strokeWidth="2" />
+          <line x1="200" y1="240" x2="250" y2="120" stroke="var(--accent-color)" strokeWidth="3" />
+          <circle cx="160" cy="150" r="6" fill="var(--bg-color)" stroke="var(--text-secondary)" strokeWidth="2" />
+          <circle cx="200" cy="100" r="6" fill="var(--bg-color)" stroke="var(--text-secondary)" strokeWidth="2" />
+          <circle cx="250" cy="120" r="8" fill="var(--bg-color)" stroke="var(--accent-color)" strokeWidth="3" />
+          <circle cx="200" cy="200" r="80" fill="none" stroke="var(--text-secondary)" strokeWidth="1" strokeDasharray="4 4" />
+        </svg>
+      );
+    default:
+      return null;
+  }
 };
 
 const Projects = () => {
@@ -273,12 +372,24 @@ const Projects = () => {
     <div className="container py-5" style={{ maxWidth: '1200px', marginTop: '25px' }}>
 
       {/* --- HERO HEADER --- */}
-      <div className="mb-5 text-center text-md-start">
+      <div className="mb-5 text-center text-md-start position-relative">
+
+        {/* Handwritten Annotation pointing to title */}
+        <div className="position-absolute d-none d-md-block" style={{ top: '-10px', left: '160px', transform: 'rotate(-5deg)', zIndex: 10 }}>
+          <span style={{ fontFamily: 'var(--font-handwriting)', fontSize: '1.2rem', color: '#DA7756' }}>
+            Research & Deployments
+          </span>
+          <svg width="40" height="40" viewBox="0 0 100 100" style={{ position: 'absolute', top: '15px', left: '-25px', transform: 'rotate(80deg)' }}>
+            <path d="M 20 80 Q 50 50 80 20" fill="none" stroke="#DA7756" strokeWidth="3" />
+            <path d="M 60 20 L 80 20 L 75 40" fill="none" stroke="#DA7756" strokeWidth="3" />
+          </svg>
+        </div>
+
         <ScrollReveal direction="up" delay={0}>
-          <div className="tracked-sub mb-2" style={{ color: 'var(--accent-color)' }}>PORTFOLIO</div>
-          <h1 className="fw-bold mb-2 display-4" style={{ letterSpacing: '-0.02em' }}>Projects</h1>
-          <p className="lead" style={{ maxWidth: '600px', color: 'var(--text-secondary)' }}>
-            A collection of high-impact AI/ML applications and full-stack engineering work.
+          <div className="tracked-sub mb-2" style={{ color: 'var(--accent-color)' }}>PORTFOLIO // 02</div>
+          <h1 className="fw-bold mb-3 display-3" style={{ letterSpacing: '-0.02em', fontFamily: 'var(--font-serif)' }}>Projects</h1>
+          <p className="lead" style={{ maxWidth: '650px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+            A collection of high-impact AI/ML applications, autonomous agentic frameworks, and full-stack engineering work.
           </p>
         </ScrollReveal>
       </div>
@@ -324,114 +435,21 @@ const Projects = () => {
       {/* --- BENTO GRID --- */}
       <div className="row g-4">
         {filteredProjects.map((project, index) => (
-          <div key={`${project.id}-${index}`} className="col-12 col-md-6 d-flex align-items-stretch">
+          <div key={`${project.id}-${index}`} className="col-12 col-md-6 d-flex align-items-stretch" style={{ minHeight: '380px' }}>
             <ScrollReveal direction="up" delay={index * 50} className="w-100">
-              <GlowCard
-                className="apple-card h-100 overflow-hidden cursor-pointer w-100 d-flex flex-column"
+              <PaperLiftCard
+                title={project.title}
+                description={project.desc}
+                link={project.githubUrl}
+                tech={project.technologies.slice(0, 4)}
+                status={project.featured ? "Featured" : project.category}
+                annotation={project.subtitle}
+                isDark={index % 2 === 0}
                 onClick={() => handleProjectClick(project)}
-                glowColor="rgba(218, 119, 86, 0.12)"
-                glowSize={400}
-                style={{
-                  cursor: 'pointer',
-                  minHeight: '400px',
-                  background: 'var(--card-bg)',
-                  transition: 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.4s ease',
-                  border: '1px solid var(--border-color)'
-                }}
+                className="w-100"
               >
-                {/* Image Section */}
-                <div
-                  className="position-relative overflow-hidden w-100"
-                  style={{ height: '240px', flexShrink: 0 }}
-                >
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      backgroundImage: `url(${project.image})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      transition: 'transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    }}
-                    className="project-img-hover w-100 h-100"
-                  />
-                  {/* Featured Badge */}
-                  {project.featured && (
-                    <div className="position-absolute top-0 end-0 m-3" style={{ zIndex: 10 }}>
-                      <span
-                        className="badge d-flex align-items-center gap-1 px-3 py-2 rounded-pill"
-                        style={{
-                          backgroundColor: 'var(--accent-color)',
-                          color: 'white',
-                          boxShadow: 'var(--shadow-sm)',
-                          fontSize: '0.75rem'
-                        }}
-                      >
-                        <StarFill /> Featured
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Content Section */}
-                <div className="p-4 d-flex flex-column justify-content-between flex-grow-1">
-                  <div className="mb-4">
-                    <span className="tracked-sub mb-2 d-block text-uppercase" style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                      {project.subtitle}
-                    </span>
-                    <h3 className="h4 fw-bold mb-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-serif)' }}>{project.title}</h3>
-                    <p className="small mb-0" style={{ lineHeight: '1.6', color: 'var(--text-secondary)' }}>
-                      {project.desc}
-                    </p>
-                  </div>
-
-                  <div className="d-flex align-items-center justify-content-between mt-auto pt-3" style={{ borderTop: '1px solid var(--border-light)' }}>
-                    <div className="d-flex flex-wrap gap-1">
-                      {project.technologies.slice(0, 3).map((tech, i) => (
-                        <span
-                          key={i}
-                          className="badge fw-normal px-2 py-1"
-                          style={{
-                            fontSize: '0.7rem',
-                            borderRadius: '6px',
-                            backgroundColor: 'rgba(218, 119, 86, 0.08)',
-                            color: 'var(--accent-color)',
-                            border: '1px solid rgba(218, 119, 86, 0.15)'
-                          }}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 3 && (
-                        <span
-                          className="badge fw-normal px-2 py-1"
-                          style={{
-                            fontSize: '0.7rem',
-                            borderRadius: '6px',
-                            backgroundColor: 'var(--border-color)',
-                            color: 'var(--text-secondary)'
-                          }}
-                        >
-                          +{project.technologies.length - 3}
-                        </span>
-                      )}
-                    </div>
-                    <button
-                      className="btn btn-sm rounded-circle p-2 d-flex align-items-center justify-content-center"
-                      style={{
-                        backgroundColor: 'var(--border-color)',
-                        border: '1px solid var(--border-light)',
-                        color: 'var(--text-secondary)',
-                        width: '32px',
-                        height: '32px',
-                        transition: 'all 0.2s ease'
-                      }}
-                    >
-                      <Eye />
-                    </button>
-                  </div>
-                </div>
-              </GlowCard>
+                {getProjectSketch(project.title)}
+              </PaperLiftCard>
             </ScrollReveal>
           </div>
         ))}
@@ -465,8 +483,8 @@ const Projects = () => {
                 onClick={() => setShowModal(false)}
                 className="btn rounded-circle p-2"
                 style={{
-                  width: '36px',
-                  height: '36px',
+                  width: '44px',
+                  height: '44px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

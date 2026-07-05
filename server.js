@@ -3,6 +3,8 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+import slowDown from 'express-slow-down';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,14 +12,53 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy if the app is behind a load balancer/reverse proxy (e.g., Render, Vercel, Nginx)
+// This ensures req.ip gets the real client IP, not the proxy's IP.
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(cors());
+
+// --- Rate Limiting Configuration ---
+
+// Contact Form Limiter: 5 submissions per hour
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5,
+  message: { success: false, error: "You've sent too many messages recently. Please try again later or reach out directly via email." },
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res, next, options) => {
+    console.warn(`[Rate Limit Exceeded] Contact form IP: ${req.ip}`);
+    res.status(429).json(options.message);
+  }
+});
+
+// Chat Speed Limiter: Delay responses after 10 requests in a minute
+const chatSpeedLimiter = slowDown({
+  windowMs: 60 * 1000, // 1 minute
+  delayAfter: 10,
+  delayMs: (hits) => (hits - 10) * 500, // 11th request has 500ms delay, 12th has 1000ms delay, etc.
+});
+
+// Chat Rate Limiter: Max 20 requests per minute
+const chatRateLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 20,
+  message: { text: "Wow, you're chatting fast! 🤖 Please take a quick breather for a minute before sending more messages." },
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res, next, options) => {
+    console.warn(`[Rate Limit Exceeded] Chat API IP: ${req.ip}`);
+    res.json(options.message); // Return 200 with text so the frontend widget displays it nicely as a bot reply
+  }
+});
 
 // Serve static files from the Vite build directory (dist)
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Contact Route using Web3Forms (HTTP API)
-app.post('/api/contact', async (req, res) => {
+app.post('/api/contact', contactLimiter, async (req, res) => {
   const { name, email, subject, message } = req.body;
 
   if (!name || !email || !subject || !message) {
@@ -61,8 +102,17 @@ app.post('/api/contact', async (req, res) => {
 });
 
 // Secure Groq API Route
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', chatSpeedLimiter, chatRateLimiter, async (req, res) => {
   const { message } = req.body;
+
+  // Request Validation
+  if (!message || typeof message !== 'string' || message.trim() === '') {
+    return res.json({ text: "Error: Message cannot be empty." });
+  }
+
+  if (message.length > 500) {
+    return res.json({ text: "Error: Your message is too long! Please keep it under 500 characters." });
+  }
   const apiKey = process.env.GROQ_API_KEY;
 
   if (!apiKey) {
@@ -73,12 +123,16 @@ app.post('/api/chat', async (req, res) => {
   }
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
+      signal: controller.signal,
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [
@@ -113,14 +167,22 @@ app.post('/api/chat', async (req, res) => {
       })
     });
 
+    clearTimeout(timeoutId);
+
     const data = await response.json();
     if (data.choices && data.choices[0] && data.choices[0].message) {
       res.json({ text: data.choices[0].message.content });
     } else {
-      res.status(500).json({ error: "Invalid response from Groq." });
+      console.error('Groq API Error Data:', data);
+      res.json({ text: "Error: Received an invalid response from the AI." });
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to communicate with Groq API." });
+    if (error.name === 'AbortError') {
+      console.warn(`[Timeout] Chat API request timed out for IP: ${req.ip}`);
+      return res.json({ text: "Error: The AI took too long to respond. Please try again." });
+    }
+    console.error('Error communicating with Groq API:', error);
+    res.json({ text: "Error: Failed to communicate with the AI service." });
   }
 });
 

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
 import ScrollReveal from '../components/ScrollReveal';
 import GlowCard from '../components/GlowCard';
+import Roadmap from '../components/Roadmap';
+import ProjectBento from '../components/ProjectBento';
 
 // --- Inline SVG Icons ---
 const ArrowRight = ({ size = 16, className = "" }) => (
@@ -73,26 +75,41 @@ const Home = () => {
   return (
     <div className="container py-5" style={{ maxWidth: '1200px' }}>
 
-      {/* --- HERO SECTION --- */}
-      <section className="row align-items-center min-vh-75 py-5">
+      {/* --- HERO SECTION (NOTEBOOK STYLE) --- */}
+      <section className="row align-items-center min-vh-75 py-5 position-relative">
+        
+        {/* Subtle Background Texture for Hero */}
+        <div className="position-absolute top-0 start-0 w-100 h-100 opacity-25" style={{ filter: 'url(#pencil-texture)', pointerEvents: 'none', zIndex: -1 }}></div>
 
         {/* Left Col: Text Content */}
-        <div className="col-lg-7 order-2 order-lg-1">
+        <div className="col-lg-7 order-2 order-lg-1 position-relative z-1">
+          
+          {/* Handwritten Annotation pointing to Name */}
+          <div className="position-absolute d-none d-md-block" style={{ top: '-15px', left: '200px', transform: 'rotate(-5deg)', zIndex: 10 }}>
+            <span style={{ fontFamily: 'var(--font-handwriting)', fontSize: '1.2rem', color: '#DA7756' }}>
+              That's me!
+            </span>
+            <svg width="40" height="40" viewBox="0 0 100 100" style={{ position: 'absolute', top: '15px', left: '-25px', transform: 'rotate(80deg)' }}>
+              <path d="M 20 80 Q 50 50 80 20" fill="none" stroke="#DA7756" strokeWidth="3" />
+              <path d="M 60 20 L 80 20 L 75 40" fill="none" stroke="#DA7756" strokeWidth="3" />
+            </svg>
+          </div>
+
           <ScrollReveal direction="up" delay={0}>
             {/* Tracked Label */}
             <div className="tracked-sub mb-3" style={{ color: 'var(--accent-color)' }}>
-              AI/ML ENGINEER
+              MEET VAGHELA // 00
             </div>
 
             {/* Static Greeting — Serif Italic */}
-            <h2 className="display-6 fw-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
-              Hello, I am <span className="serif-italic" style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Meet Vaghela</span>
+            <h2 className="display-6 fw-bold mb-2" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-secondary)' }}>
+              Hello, I am <span className="serif-italic" style={{ color: 'var(--text-primary)' }}>Meet Vaghela</span>
             </h2>
           </ScrollReveal>
 
           <ScrollReveal direction="up" delay={150}>
             {/* Dynamic Typing Title — Warm accent */}
-            <h1 className="display-2 fw-bold mb-4" style={{ minHeight: '1.2em', letterSpacing: '-2px' }}>
+            <h1 className="display-2 fw-bold mb-4 position-relative d-inline-block" style={{ fontFamily: 'var(--font-serif)', letterSpacing: '-0.02em', minHeight: '1.2em' }}>
               <span style={{ color: 'var(--accent-color)' }}>
                 <TypeAnimation
                   sequence={[
@@ -124,106 +141,153 @@ const Home = () => {
               that solve real-world problems with cutting-edge algorithms.
             </p>
 
-            <div className="d-flex gap-3">
-              <Link to="/projects" className="btn btn-apple d-flex align-items-center gap-2">
+            <div className="d-flex gap-3 flex-wrap">
+              <Link 
+                to="/projects" 
+                className="btn px-4 py-2 sketch-border fw-bold d-inline-flex align-items-center gap-2 hover-lift-card" 
+                style={{ backgroundColor: 'var(--accent-color)', color: '#FDFCFA', border: '2px solid var(--accent-color)' }}
+              >
                 View Work <ArrowRight />
               </Link>
-              <Link to="/contact" className="btn btn-apple-secondary">
+              <Link 
+                to="/contact" 
+                className="btn px-4 py-2 sketch-border fw-bold d-inline-flex align-items-center gap-2 hover-lift-card" 
+                style={{ backgroundColor: 'transparent', color: 'var(--text-primary)', border: '2px solid var(--border-color)' }}
+              >
                 Get in Touch
               </Link>
             </div>
           </ScrollReveal>
         </div>
 
-        {/* Right Col: Profile Picture */}
+        {/* Right Col: Profile Picture (Polaroid Style) */}
         <div className="col-lg-5 order-1 order-lg-2 mb-5 mb-lg-0 text-center">
           <ScrollReveal direction="scale" delay={200}>
-            <div className="position-relative d-inline-block">
-              {/* Warm Glow Background */}
-              <div
-                className="position-absolute"
-                style={{
-                  top: '-10%',
-                  left: '-10%',
-                  width: '120%',
-                  height: '120%',
-                  background: 'radial-gradient(circle, rgba(218, 119, 86, 0.12) 0%, rgba(0,0,0,0) 70%)',
-                  borderRadius: '50%',
-                  filter: 'blur(40px)',
-                  zIndex: -1
+            <div 
+              className="p-3 mx-auto position-relative"
+              style={{ 
+                maxWidth: '350px', 
+                backgroundColor: '#FDFCFA', // polaroid white
+                border: '1px solid rgba(0,0,0,0.1)',
+                boxShadow: '4px 6px 12px rgba(0,0,0,0.08), 1px 1px 2px rgba(0,0,0,0.05)',
+                transform: 'rotate(2deg)',
+                borderRadius: '2px'
+              }}
+            >
+              {/* Tape at top */}
+              <div 
+                className="position-absolute top-0 start-50 translate-middle" 
+                style={{ 
+                  width: '80px', 
+                  height: '25px', 
+                  backgroundColor: 'rgba(230, 225, 215, 0.6)', 
+                  border: '1px solid rgba(0,0,0,0.05)',
+                  transform: 'rotate(-3deg)',
+                  boxShadow: '1px 1px 3px rgba(0,0,0,0.05)',
+                  backdropFilter: 'blur(2px)'
                 }}
-              />
-              {/* Profile Image */}
-              <img
-                src="/profile_me.jpg"
-                alt="Meet Vaghela"
-                className="img-fluid rounded-circle"
-                style={{
-                  width: '320px',
-                  height: '320px',
-                  objectFit: 'cover',
-                  border: '3px solid var(--border-color)',
-                  boxShadow: 'var(--shadow-hover)'
-                }}
-              />
+              ></div>
+              
+              <div style={{ border: '1px solid rgba(0,0,0,0.1)' }}>
+                <img
+                  src="/profile_me.jpg"
+                  alt="Meet Vaghela"
+                  className="img-fluid"
+                  style={{
+                    width: '100%',
+                    aspectRatio: '1/1',
+                    objectFit: 'cover'
+                  }}
+                />
+              </div>
+              
+              <div className="mt-3 text-center fw-bold" style={{ fontFamily: 'var(--font-handwriting)', fontSize: '1.4rem', color: '#1A1915', opacity: 0.8 }}>
+                Vadodara, India
+              </div>
             </div>
           </ScrollReveal>
         </div>
 
       </section>
 
-      {/* --- LIVE GPU SANDBOX SECTION --- */}
-      <section className="py-4 mb-5">
+      {/* --- LIVE GPU SANDBOX SECTION (NOTEBOOK TELEMETRY PRINTOUT) --- */}
+      <section className="py-4 mb-5 position-relative">
+        
+        {/* Handwritten tape holding the printout */}
+        <div className="position-absolute top-0 start-50 translate-middle" style={{ width: '120px', height: '35px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', opacity: 0.9, transform: 'rotate(2deg)', zIndex: 10, boxShadow: 'var(--shadow-sm)' }}></div>
+        
         <ScrollReveal direction="up" delay={0}>
-          <GlowCard className="p-4 overflow-hidden border-0" style={{ background: '#13120F', color: '#E8E4DE', borderRadius: '20px' }} glowColor="rgba(218, 119, 86, 0.15)">
-            <div className="row g-4 align-items-center">
+          <div className="p-4 p-md-5 position-relative overflow-hidden sketch-border" style={{ background: 'var(--card-bg)', color: 'var(--text-primary)' }}>
+            
+            <div className="position-absolute top-0 start-0 w-100 h-100 opacity-50" style={{ filter: 'url(#pencil-texture)', pointerEvents: 'none' }}></div>
+            
+            {/* Watermark */}
+            <div className="position-absolute" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%) rotate(-10deg)', fontSize: '8rem', color: 'var(--text-primary)', opacity: 0.03, fontFamily: 'var(--font-serif)', fontWeight: 900, whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+              SYSTEM LOG
+            </div>
+
+            <div className="row g-4 align-items-center position-relative z-1">
               
               {/* Telemetry Column 1: GPU Status */}
-              <div className="col-md-4 border-end-custom" style={{ borderRight: '1px solid rgba(232, 228, 222, 0.08)' }}>
+              <div className="col-md-4 border-end-custom" style={{ borderRight: '2px dashed var(--border-color)' }}>
                 <div className="d-flex align-items-center gap-2 mb-3">
-                  <span className="pulsing-green-dot"></span>
-                  <span className="tracked-sub text-uppercase text-white-50" style={{ fontSize: '0.65rem', letterSpacing: '0.1em' }}>Inference GPU status</span>
+                  <svg width="14" height="14" viewBox="0 0 100 100">
+                    <path d="M 20 50 L 40 75 L 80 20" fill="none" stroke="#27c93f" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span className="tracked-sub text-uppercase text-muted fw-bold" style={{ fontSize: '0.65rem', letterSpacing: '0.1em' }}>Inference GPU status</span>
                 </div>
-                <h4 className="fw-bold h5 mb-2" style={{ fontFamily: 'var(--font-serif)', color: '#E8E4DE' }}>NVIDIA RTX 4090</h4>
-                <div className="d-flex flex-column gap-2 mt-3 text-white-50" style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono, monospace)' }}>
-                  <div className="d-flex justify-content-between">
-                    <span>Core Load</span>
-                    <span className="text-white">74.2%</span>
+                <h4 className="fw-bold h5 mb-3" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}>NVIDIA RTX 4090</h4>
+                <div className="d-flex flex-column gap-3 mt-3 text-secondary" style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono, monospace)' }}>
+                  
+                  <div>
+                    <div className="d-flex justify-content-between mb-1 fw-bold" style={{ color: 'var(--text-primary)' }}>
+                      <span>Core Load</span>
+                      <span>74.2%</span>
+                    </div>
+                    {/* Sketched Progress Bar */}
+                    <div className="w-100 sketch-border overflow-hidden p-1" style={{ height: '14px', background: 'transparent' }}>
+                      <div className="h-100" style={{ width: '74.2%', backgroundColor: '#DA7756', opacity: 0.8, borderRadius: '2px' }}></div>
+                    </div>
                   </div>
-                  <div className="w-100 bg-dark rounded-pill overflow-hidden" style={{ height: '5px' }}>
-                    <div className="bg-success h-100" style={{ width: '74.2%' }}></div>
+                  
+                  <div>
+                    <div className="d-flex justify-content-between mb-1 fw-bold" style={{ color: 'var(--text-primary)' }}>
+                      <span>VRAM Usage</span>
+                      <span>18.6 GB / 24 GB</span>
+                    </div>
+                    {/* Sketched Progress Bar */}
+                    <div className="w-100 sketch-border overflow-hidden p-1" style={{ height: '14px', background: 'transparent' }}>
+                      <div className="h-100" style={{ width: '77.5%', backgroundColor: '#27c93f', opacity: 0.8, borderRadius: '2px' }}></div>
+                    </div>
                   </div>
-                  <div className="d-flex justify-content-between mt-1">
-                    <span>VRAM Usage</span>
-                    <span className="text-white">18.6 GB / 24 GB</span>
-                  </div>
-                  <div className="w-100 bg-dark rounded-pill overflow-hidden" style={{ height: '5px' }}>
-                    <div className="bg-warning h-100" style={{ width: '77.5%' }}></div>
-                  </div>
+
                 </div>
               </div>
 
               {/* Telemetry Column 2: Loss & Training Sim */}
-              <div className="col-md-4 border-end-custom" style={{ borderRight: '1px solid rgba(232, 228, 222, 0.08)' }}>
+              <div className="col-md-4 border-end-custom" style={{ borderRight: '2px dashed var(--border-color)' }}>
                 <div className="d-flex align-items-center gap-2 mb-3">
-                  <span className="pulsing-amber-dot"></span>
-                  <span className="tracked-sub text-uppercase text-white-50" style={{ fontSize: '0.65rem', letterSpacing: '0.1em' }}>Fine-tuning execution logs</span>
+                  <svg width="14" height="14" viewBox="0 0 100 100">
+                    <circle cx="50" cy="75" r="10" fill="#ffbd2e" />
+                    <path d="M 50 15 L 50 55" stroke="#ffbd2e" strokeWidth="12" strokeLinecap="round" />
+                  </svg>
+                  <span className="tracked-sub text-uppercase text-muted fw-bold" style={{ fontSize: '0.65rem', letterSpacing: '0.1em' }}>Fine-tuning execution logs</span>
                 </div>
-                <h4 className="fw-bold h5 mb-1" style={{ fontFamily: 'var(--font-serif)', color: '#E8E4DE' }}>Llama-3.3-8B-Instruct</h4>
-                <div className="mt-3 text-white-50" style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono, monospace)', lineHeight: '1.5' }}>
-                  <div className="d-flex justify-content-between mb-1">
+                <h4 className="fw-bold h5 mb-2" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}>Llama-3.3-8B-Instruct</h4>
+                <div className="mt-3 text-secondary" style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono, monospace)', lineHeight: '1.7' }}>
+                  <div className="d-flex justify-content-between mb-1 border-bottom pb-1" style={{ borderBottomColor: 'var(--border-color)' }}>
                     <span>Epoch</span>
-                    <span className="text-white">{epoch} / 5</span>
+                    <span className="fw-bold text-primary">{epoch} / 5</span>
                   </div>
-                  <div className="d-flex justify-content-between mb-1">
+                  <div className="d-flex justify-content-between mb-1 border-bottom pb-1" style={{ borderBottomColor: 'var(--border-color)' }}>
                     <span>Training Loss</span>
-                    <span className="text-accent-color fw-bold" style={{ color: 'var(--accent-color)' }}>{loss}</span>
+                    <span className="fw-bold" style={{ color: 'var(--accent-color)' }}>{loss}</span>
                   </div>
-                  <div className="d-flex justify-content-between mb-1">
+                  <div className="d-flex justify-content-between mb-1 border-bottom pb-1" style={{ borderBottomColor: 'var(--border-color)' }}>
                     <span>Validation Accuracy</span>
-                    <span className="text-success fw-bold">{valAcc}%</span>
+                    <span className="fw-bold" style={{ color: '#27c93f' }}>{valAcc}%</span>
                   </div>
-                  <div className="text-white-50 mt-2" style={{ fontSize: '0.65rem', fontStyle: 'italic' }}>
+                  <div className="mt-2 fw-bold" style={{ fontSize: '0.7rem', color: 'var(--text-primary)', opacity: 0.7 }}>
                     &gt; optimizer: AdamW | lr: 2e-5 | lora_r: 16
                   </div>
                 </div>
@@ -232,13 +296,23 @@ const Home = () => {
               {/* Telemetry Column 3: Focus stack */}
               <div className="col-md-4">
                 <div className="d-flex align-items-center gap-2 mb-3">
-                  <span>🧠</span>
-                  <span className="tracked-sub text-uppercase text-white-50" style={{ fontSize: '0.65rem', letterSpacing: '0.1em' }}>Research Stack & Focus</span>
+                  <span style={{ fontSize: '0.8rem' }}>📌</span>
+                  <span className="tracked-sub text-uppercase text-muted fw-bold" style={{ fontSize: '0.65rem', letterSpacing: '0.1em' }}>Research Stack & Focus</span>
                 </div>
-                <h4 className="fw-bold h5 mb-2" style={{ fontFamily: 'var(--font-serif)', color: '#E8E4DE' }}>Active Workloads</h4>
-                <div className="d-flex flex-wrap gap-1.5 mt-3">
-                  {['Langfuse Metrics', 'vLLM Serving', 'Ollama Clusters', 'DSPy Prompts', 'Multi-Agent Routing'].map(item => (
-                    <span key={item} className="badge fw-normal px-2.5 py-1.5 text-white-50" style={{ fontSize: '0.65rem', backgroundColor: 'rgba(232, 228, 222, 0.05)', border: '1px solid rgba(232, 228, 222, 0.1)', borderRadius: '6px' }}>
+                <h4 className="fw-bold h5 mb-3" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}>Active Workloads</h4>
+                <div className="d-flex flex-wrap gap-2 mt-3">
+                  {['Langfuse Metrics', 'vLLM Serving', 'Ollama Clusters', 'DSPy Prompts', 'Multi-Agent Routing'].map((item, i) => (
+                    <span 
+                      key={item} 
+                      className="sketch-border fw-bold px-2 py-1" 
+                      style={{ 
+                        fontSize: '0.7rem', 
+                        backgroundColor: 'var(--bg-color)', 
+                        color: 'var(--text-primary)', 
+                        boxShadow: '2px 2px 0px rgba(0,0,0,0.1)', 
+                        transform: `rotate(${i % 2 === 0 ? 1 : -1.5}deg)` 
+                      }}
+                    >
                       {item}
                     </span>
                   ))}
@@ -246,39 +320,13 @@ const Home = () => {
               </div>
 
             </div>
-          </GlowCard>
+          </div>
         </ScrollReveal>
         <style>{`
-          .pulsing-green-dot {
-            width: 7px;
-            height: 7px;
-            background-color: #27c93f;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 6px #27c93f;
-            animation: pulse-glow-green 2s infinite ease-in-out;
-          }
-          .pulsing-amber-dot {
-            width: 7px;
-            height: 7px;
-            background-color: #ffbd2e;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 6px #ffbd2e;
-            animation: pulse-glow-amber 2s infinite ease-in-out;
-          }
-          @keyframes pulse-glow-green {
-            0%, 100% { box-shadow: 0 0 4px #27c93f; opacity: 0.6; }
-            50% { box-shadow: 0 0 10px #27c93f; opacity: 1; }
-          }
-          @keyframes pulse-glow-amber {
-            0%, 100% { box-shadow: 0 0 4px #ffbd2e; opacity: 0.6; }
-            50% { box-shadow: 0 0 10px #ffbd2e; opacity: 1; }
-          }
           @media (max-width: 768px) {
             .border-end-custom {
               border-right: none !important;
-              border-bottom: 1px solid rgba(232, 228, 222, 0.08);
+              border-bottom: 2px dashed var(--border-color);
               padding-bottom: 20px;
               margin-bottom: 10px;
             }
@@ -286,176 +334,19 @@ const Home = () => {
         `}</style>
       </section>
 
+      {/* --- AI SYSTEMS ARCHITECTURE ROADMAP --- */}
+      <Roadmap />
+
       {/* --- SELECTED WORK (BENTO GRID) --- */}
       <section className="py-5">
         <ScrollReveal direction="up" delay={0}>
           <div className="d-flex justify-content-between align-items-end mb-4">
             <h3 className="fw-bold mb-0" style={{ fontFamily: 'var(--font-serif)' }}>Selected Work</h3>
-            <Link to="/projects" className="text-decoration-none small fw-bold" style={{ color: 'var(--accent-color)' }}>View All &rarr;</Link>
+            <Link to="/projects" className="text-decoration-none small fw-bold" style={{ color: 'var(--accent-color)' }}>+ More Experiments &rarr;</Link>
           </div>
         </ScrollReveal>
 
-        <div className="row g-4">
-
-          {/* Featured Project: Adaptive RAG (Full Width) */}
-          <div className="col-12">
-            <ScrollReveal direction="up" delay={100} className="w-100">
-              <a
-                href="https://adaptive-rag-frontend.onrender.com/"
-                target="_blank"
-                rel="noreferrer"
-                className="text-decoration-none w-100 d-block"
-                onMouseEnter={() => setHoveredProject('adaptive')}
-                onMouseLeave={() => setHoveredProject(null)}
-              >
-                <GlowCard
-                  className="apple-card p-4 p-md-5 d-flex flex-column flex-md-row align-items-md-center justify-content-between position-relative overflow-hidden w-100"
-                  glowColor="rgba(218, 119, 86, 0.15)"
-                  glowSize={500}
-                  style={{
-                    background: 'linear-gradient(135deg, #2D2B27 0%, #4A4740 100%)',
-                    color: '#E8E4DE',
-                    border: 'none',
-                    minHeight: '300px'
-                  }}
-                >
-                  <div className="position-relative z-1 col-md-7">
-                    <div className="d-flex align-items-center gap-3 mb-3">
-                      <div className="p-2 rounded-circle" style={{ backgroundColor: 'rgba(218, 119, 86, 0.2)' }}>
-                        <Cpu size={28} color="#DA7756" />
-                      </div>
-                      <span className="badge rounded-pill px-3 py-1" style={{ backgroundColor: 'var(--accent-color)', color: 'white', fontSize: '0.75rem' }}>Flagship Project</span>
-                    </div>
-                    <h3 className="fw-bold mb-2 display-6" style={{ color: '#E8E4DE', fontFamily: 'var(--font-serif)' }}>Adaptive RAG System</h3>
-                    <p className="mb-4" style={{ maxWidth: '90%', fontSize: '1.1rem', color: 'rgba(232, 228, 222, 0.65)' }}>
-                      A self-correcting retrieval system that intelligently routes queries between vector stores and web search for optimal accuracy.
-                    </p>
-                    <div className="d-flex align-items-center gap-2 fw-medium" style={{ color: '#DA7756' }}>
-                      Try Live Demo <ArrowRight size={14} />
-                    </div>
-                  </div>
-
-                  {/* Warm Glow Decoration */}
-                  <div
-                    className="position-absolute"
-                    style={{
-                      top: '-20%',
-                      right: '-10%',
-                      width: '500px',
-                      height: '500px',
-                      background: 'radial-gradient(circle, rgba(218, 119, 86, 0.12) 0%, rgba(0,0,0,0) 70%)',
-                      borderRadius: '50%',
-                      filter: 'blur(60px)',
-                      transition: 'all 0.6s ease',
-                      transform: hoveredProject === 'adaptive' ? 'scale(1.1) translate(-20px, 20px)' : 'scale(1)'
-                    }}
-                  />
-                </GlowCard>
-              </a>
-            </ScrollReveal>
-          </div>
-
-          {/* Secondary Feature: YouTube Chatbot */}
-          <div className="col-md-7 d-flex align-items-stretch">
-            <ScrollReveal direction="left" delay={200} className="w-100">
-              <a
-                href="https://youtube-chatbot-page.vercel.app/"
-                target="_blank"
-                rel="noreferrer"
-                className="text-decoration-none w-100 h-100 d-block"
-                onMouseEnter={() => setHoveredProject('youtube')}
-                onMouseLeave={() => setHoveredProject(null)}
-              >
-                <GlowCard
-                  className="apple-card h-100 p-4 d-flex flex-column justify-content-between position-relative overflow-hidden w-100"
-                  glowColor="rgba(218, 119, 86, 0.18)"
-                  glowSize={400}
-                  style={{
-                    background: 'var(--text-primary)',
-                    color: 'var(--bg-color)',
-                    border: 'none',
-                    minHeight: '280px'
-                  }}
-                >
-                  <div className="position-relative z-1">
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <Youtube size={32} color="#DA7756" />
-                      <BoxArrowUpRight style={{ opacity: 0.4 }} />
-                    </div>
-                    <h4 className="fw-bold mb-2" style={{ color: 'var(--bg-color)', fontFamily: 'var(--font-serif)' }}>YouTube RAG Chatbot</h4>
-                    <p className="mb-0" style={{ opacity: 0.6 }}>
-                      Interact with videos using AI. Ask questions and get instant answers from transcripts via RAG.
-                    </p>
-                  </div>
-
-                  <div
-                    className="position-absolute"
-                    style={{
-                      top: '50%',
-                      right: '-10%',
-                      width: '300px',
-                      height: '300px',
-                      background: 'radial-gradient(circle, rgba(218, 119, 86, 0.12) 0%, rgba(0,0,0,0) 70%)',
-                      borderRadius: '50%',
-                      filter: 'blur(40px)',
-                      transition: 'all 0.5s ease',
-                      transform: hoveredProject === 'youtube' ? 'scale(1.2)' : 'scale(1)'
-                    }}
-                  />
-                </GlowCard>
-              </a>
-            </ScrollReveal>
-          </div>
-
-          {/* Tertiary Feature: Webionix Extension */}
-          <div className="col-md-5 d-flex align-items-stretch">
-            <ScrollReveal direction="right" delay={200} className="w-100">
-              <a
-                href="https://landingpage-nxi6.onrender.com/"
-                target="_blank"
-                rel="noreferrer"
-                className="text-decoration-none w-100 h-100 d-block"
-                onMouseEnter={() => setHoveredProject('demo')}
-                onMouseLeave={() => setHoveredProject(null)}
-              >
-                <GlowCard
-                  className="apple-card h-100 p-4 d-flex flex-column justify-content-between position-relative overflow-hidden w-100"
-                  glowColor="rgba(218, 119, 86, 0.15)"
-                  glowSize={400}
-                  style={{ background: 'var(--card-bg)', minHeight: '280px', border: '1px solid var(--border-color)' }}
-                >
-                  <div className="position-relative z-1">
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <div className="p-2 rounded-circle" style={{ backgroundColor: 'rgba(218, 119, 86, 0.1)' }}>
-                        <PlayFill size={24} style={{ color: 'var(--accent-color)' }} />
-                      </div>
-                      <BoxArrowUpRight style={{ color: 'var(--text-muted)' }} />
-                    </div>
-                    <h4 className="fw-bold mb-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-serif)' }}>Webionix Extension</h4>
-                    <p className="small mb-0" style={{ color: 'var(--text-secondary)' }}>
-                      Live interactive demo of my latest ML model architecture.
-                    </p>
-                  </div>
-
-                  <div
-                    className="position-absolute"
-                    style={{
-                      bottom: '-20%',
-                      left: '-20%',
-                      width: '200px',
-                      height: '200px',
-                      background: 'radial-gradient(circle, rgba(218, 119, 86, 0.08) 0%, rgba(255,255,255,0) 70%)',
-                      borderRadius: '50%',
-                      transition: 'all 0.5s ease',
-                      transform: hoveredProject === 'demo' ? 'scale(1.5)' : 'scale(1)'
-                    }}
-                  />
-                </GlowCard>
-              </a>
-            </ScrollReveal>
-          </div>
-
-        </div>
+        <ProjectBento />
       </section>
     </div>
   );

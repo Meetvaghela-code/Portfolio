@@ -143,6 +143,13 @@ a {
   background: radial-gradient(circle, rgba(218, 119, 86, 0.03) 0%, transparent 70%);
 }
 
+/* Performance optimization for mobile */
+@media (max-width: 768px) {
+  .claude-bg::after {
+    display: none;
+  }
+}
+
 /* 5. Film Grain — very subtle texture */
 .grain-overlay {
   position: fixed;

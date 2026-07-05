@@ -2,15 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const TerminalChat = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [history, setHistory] = useState([
-    { type: 'system', text: "Meet's Portfolio OS [Version 1.0.0]" },
-    { type: 'system', text: "(c) 2026 Meet Vaghela. All rights reserved." },
-    { type: 'system', text: "Type 'help' to see a list of commands or ask a question directly (e.g., 'What are your skills?')." },
-  ]);
+  const [history, setHistory] = useState([]);
   const [inputVal, setInputVal] = useState('');
   const [isThinking, setIsThinking] = useState(false);
+  const [isBooting, setIsBooting] = useState(false);
   const terminalEndRef = useRef(null);
   const inputRef = useRef(null);
+  const hasBooted = useRef(false);
 
   const knowledgeBase = [
     {
@@ -71,7 +69,7 @@ const TerminalChat = () => {
     },
     {
       keywords: ['contact', 'email', 'phone', 'github', 'linkedin', 'hire', 'instagram', 'socials'],
-      response: "Let's connect:\n- Email: meetv8540@gmail.com\n- GitHub: github.com/Meetvaghela-code\n- LinkedIn: linkedin.com/in/vaghelameet\n- Instagram: instagram.com/meett.vaghela\n- Status: Open for AI/ML Engineer opportunities."
+      response: "Let's connect:\n- Email: meetv8540@gmail.com\n- GitHub: github.com/Meetvaghela-code\n- LinkedIn: linkedin.com/in/vaghelameet\n- Instagram: instagram.com/meett.vaghela\n- Status: Open to AI Engineer opportunities."
     },
     {
       keywords: ['location', 'where do you live', 'vadodara', 'india', 'city'],
@@ -86,6 +84,36 @@ const TerminalChat = () => {
       response: "Hello! I am Portfolio-OS. Ask me anything about Meet's technical background, projects, or professional experience."
     }
   ];
+
+  // --- Boot Sequence Logic ---
+  useEffect(() => {
+    if (isOpen && !hasBooted.current) {
+      hasBooted.current = true;
+      setIsBooting(true);
+      setHistory([]);
+      
+      const seq = [
+        "Initializing...",
+        "Loading Memory...",
+        "Connecting Agents...",
+        "Ready.\n\nMeet's Agentic OS [v1.0.0]\nType 'help' for commands, or select a prompt below:"
+      ];
+      
+      let step = 0;
+      const interval = setInterval(() => {
+        if (step < seq.length) {
+          const currentText = seq[step];
+          setHistory(prev => [...prev, { type: 'system', text: currentText }]);
+          step++;
+        } else {
+          setIsBooting(false);
+          clearInterval(interval);
+        }
+      }, 600); // 600ms per boot step
+      
+      return () => clearInterval(interval);
+    }
+  }, [isOpen]);
 
   const handleCommand = async (cmd) => {
     const trimmed = cmd.trim().toLowerCase();
@@ -103,32 +131,9 @@ const TerminalChat = () => {
       return;
     }
 
-    if (trimmed === 'about') {
-      const match = knowledgeBase.find(item => item.keywords.includes('about'));
-      setHistory(prev => [...prev, { type: 'output', text: match.response }]);
-      return;
-    }
-
-    if (trimmed === 'skills') {
-      const match = knowledgeBase.find(item => item.keywords.includes('skills'));
-      setHistory(prev => [...prev, { type: 'output', text: match.response }]);
-      return;
-    }
-
-    if (trimmed === 'projects') {
-      const match = knowledgeBase.find(item => item.keywords.includes('projects'));
-      setHistory(prev => [...prev, { type: 'output', text: match.response }]);
-      return;
-    }
-
-    if (trimmed === 'experience') {
-      const match = knowledgeBase.find(item => item.keywords.includes('experience'));
-      setHistory(prev => [...prev, { type: 'output', text: match.response }]);
-      return;
-    }
-
-    if (trimmed === 'contact') {
-      const match = knowledgeBase.find(item => item.keywords.includes('contact'));
+    // Direct Match Fallbacks
+    const match = knowledgeBase.find(item => item.keywords.includes(trimmed));
+    if (match) {
       setHistory(prev => [...prev, { type: 'output', text: match.response }]);
       return;
     }
@@ -171,27 +176,32 @@ const TerminalChat = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!inputVal.trim()) return;
+  const handleSubmit = (e, overrideCommand = null) => {
+    if (e) e.preventDefault();
+    const userCommand = overrideCommand !== null ? overrideCommand : inputVal;
+    
+    if (!userCommand.trim()) return;
 
-    const userCommand = inputVal;
     setHistory(prev => [...prev, { type: 'input', text: userCommand }]);
-    setInputVal('');
+    if (overrideCommand === null) setInputVal('');
     handleCommand(userCommand);
+  };
+
+  const handleSuggestedPrompt = (promptText) => {
+    handleSubmit(null, promptText);
   };
 
   useEffect(() => {
     if (terminalEndRef.current) {
       terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [history, isThinking]);
+  }, [history, isThinking, isBooting]);
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (isOpen && inputRef.current && !isBooting) {
       inputRef.current.focus();
     }
-  }, [isOpen]);
+  }, [isOpen, isBooting]);
 
   useEffect(() => {
     const handleToggle = () => setIsOpen(prev => !prev);
@@ -199,195 +209,268 @@ const TerminalChat = () => {
     return () => window.removeEventListener('toggle-terminal', handleToggle);
   }, []);
 
+  // Show suggested prompts only if we have finished booting and haven't typed many commands yet
+  const showSuggestions = !isBooting && history.filter(h => h.type === 'input').length < 2;
+
   return (
     <div className="terminal-widget-container">
-      {/* Floating Toggle Button */}
-      <button 
-        className="terminal-toggle-btn"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle terminal OS"
-      >
-        <span className="terminal-pulse"></span>
-        <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M6 12.5a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v9zM5 4H2v8h3V4zM10.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-4zM14 12h-3V5h3v7z"/>
-        </svg>
-        <span>meet-terminal.sh</span>
-      </button>
-
       {/* Terminal Window */}
       {isOpen && (
-        <div className="terminal-window">
-          {/* Header Bar */}
-          <div className="terminal-header d-flex align-items-center justify-content-between px-3 py-2">
-            <div className="d-flex align-items-center gap-1.5">
-              <span className="dot dot-red" onClick={() => setIsOpen(false)}></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
+        <>
+          <div className="terminal-backdrop" onClick={() => setIsOpen(false)}></div>
+          <div className="terminal-window">
+            
+            {/* Subtle notebook paper texture overlay */}
+            <div className="position-absolute top-0 start-0 w-100 h-100 opacity-25" style={{ filter: 'url(#pencil-texture)', pointerEvents: 'none', zIndex: 0 }}></div>
+
+            {/* Handwritten Annotation overlapping the header */}
+            <span className="position-absolute d-none d-md-block" style={{ top: '-25px', left: '10%', fontFamily: 'var(--font-handwriting)', fontSize: '1.2rem', color: '#DA7756', transform: 'rotate(-5deg)', zIndex: 10 }}>
+              System interface
+            </span>
+
+            {/* Header Bar */}
+            <div className="terminal-header d-flex align-items-center justify-content-between px-3 py-2 position-relative z-1">
+              <div className="d-flex align-items-center gap-2">
+                {/* Hand-drawn sketch dots instead of perfect circles */}
+                <svg width="12" height="12" viewBox="0 0 100 100" className="sketch-dot sketch-dot-red" onClick={() => setIsOpen(false)} style={{ cursor: 'pointer' }}>
+                  <path d="M 20 50 Q 50 10 80 50 Q 50 90 20 50" fill="#ff5f56" stroke="#cc3a32" strokeWidth="6" />
+                </svg>
+                <svg width="12" height="12" viewBox="0 0 100 100" className="sketch-dot sketch-dot-yellow">
+                  <circle cx="50" cy="50" r="35" fill="#ffbd2e" stroke="#c9921c" strokeWidth="6" strokeDasharray="50 10" />
+                </svg>
+                <svg width="12" height="12" viewBox="0 0 100 100" className="sketch-dot sketch-dot-green">
+                  <path d="M 50 15 L 85 85 L 15 85 Z" fill="#27c93f" stroke="#1da132" strokeWidth="6" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div className="terminal-title text-center flex-grow-1" style={{ fontFamily: 'var(--font-mono)' }}>agent_console.exe</div>
             </div>
-            <div className="terminal-title text-center flex-grow-1">meet@portfolio: ~</div>
-          </div>
 
-          {/* Console Body */}
-          <div className="terminal-body p-3">
-            {history.map((line, idx) => (
-              <div key={idx} className={`terminal-line ${line.type}`}>
-                {line.type === 'input' && <span className="prompt">meet$ </span>}
-                <span className="text">{line.text}</span>
-              </div>
-            ))}
-            {isThinking && (
-              <div className="terminal-line system">
-                <span className="thinking-dots">Analyzing query...</span>
-              </div>
-            )}
-            <div ref={terminalEndRef} />
-          </div>
+            {/* Console Body */}
+            <div className="terminal-body p-4 position-relative z-1">
+              {history.map((line, idx) => (
+                <div key={idx} className={`terminal-line ${line.type} mb-2`}>
+                  {line.type === 'input' && <span className="prompt">agent@meet:~$ </span>}
+                  <span className="text">{line.text}</span>
+                </div>
+              ))}
+              
+              {/* Suggested Prompts Block */}
+              {showSuggestions && (
+                <div className="suggested-prompts mt-3 d-flex flex-column gap-2" style={{ maxWidth: '400px' }}>
+                  <button onClick={() => handleSuggestedPrompt("Tell me about Apex-Agent")} className="btn btn-sm text-start prompt-btn sketch-border">
+                    <span style={{ color: 'var(--accent-color)' }}>&gt;</span> Tell me about Apex-Agent
+                  </button>
+                  <button onClick={() => handleSuggestedPrompt("Explain your RAG projects")} className="btn btn-sm text-start prompt-btn sketch-border">
+                    <span style={{ color: 'var(--accent-color)' }}>&gt;</span> Explain your RAG projects
+                  </button>
+                  <button onClick={() => handleSuggestedPrompt("What are your skills?")} className="btn btn-sm text-start prompt-btn sketch-border">
+                    <span style={{ color: 'var(--accent-color)' }}>&gt;</span> What are your core skills?
+                  </button>
+                </div>
+              )}
 
-          {/* Input Form */}
-          <form onSubmit={handleSubmit} className="terminal-input-form px-3 py-2 d-flex align-items-center">
-            <span className="prompt">meet$ </span>
-            <input
-              ref={inputRef}
-              type="text"
-              className="terminal-input flex-grow-1"
-              value={inputVal}
-              onChange={(e) => setInputVal(e.target.value)}
-              placeholder="Ask a question..."
-              autoFocus
-            />
-          </form>
-        </div>
+              {isThinking && (
+                <div className="terminal-line system mt-2">
+                  <span className="thinking-dots">Fetching context...</span>
+                </div>
+              )}
+              <div ref={terminalEndRef} style={{ height: '20px' }} />
+            </div>
+
+            {/* Input Form */}
+            <form onSubmit={(e) => handleSubmit(e)} className="terminal-input-form px-4 py-3 d-flex align-items-center position-relative z-1">
+              <span className="prompt pe-2">agent@meet:~$ </span>
+              <input
+                ref={inputRef}
+                type="text"
+                className="terminal-input flex-grow-1"
+                value={inputVal}
+                onChange={(e) => setInputVal(e.target.value)}
+                disabled={isBooting}
+              />
+              <span className="cursor-block">█</span>
+            </form>
+          </div>
+        </>
       )}
 
       <style>{`
         .terminal-widget-container {
+          font-family: var(--font-mono, 'Courier New', monospace);
+        }
+        .terminal-backdrop {
           position: fixed;
-          bottom: 24px;
-          right: 24px;
-          zIndex: 1040;
-          font-family: var(--font-mono, monospace);
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(10, 9, 8, 0.5);
+          backdrop-filter: blur(4px);
+          z-index: 1045;
+          animation: fadeIn 0.2s ease;
         }
-        .terminal-toggle-btn {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: var(--btn-bg, #2D2B27);
-          color: var(--btn-text, #FDFCFA);
-          border: 1px solid var(--border-color);
-          border-radius: 8px;
-          padding: 10px 18px;
-          font-size: 0.85rem;
-          cursor: pointer;
-          box-shadow: var(--shadow-lg);
-          transition: all 0.25s ease;
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
-        .terminal-toggle-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: var(--shadow-xl);
-          background-color: var(--accent-color);
-          color: white;
-          border-color: var(--accent-color);
-        }
-        .terminal-pulse {
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          background-color: #27c93f;
-          border-radius: 50%;
-          box-shadow: 0 0 8px #27c93f;
-          animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-          0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39, 201, 63, 0.7); }
-          70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(39, 201, 63, 0); }
-          100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39, 201, 63, 0); }
-        }
+        
         .terminal-window {
-          position: absolute;
-          bottom: 56px;
-          right: 0;
-          width: 380px;
-          height: 400px;
-          background-color: #1A1915;
-          border: 1px solid rgba(218, 119, 86, 0.25);
-          border-radius: 12px;
-          box-shadow: var(--shadow-xl);
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 700px;
+          max-width: 95vw;
+          height: 500px;
+          background-color: var(--card-bg); /* Adapts to light/dark mode */
           display: flex;
           flex-direction: column;
-          overflow: hidden;
-          animation: slideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+          overflow: visible;
+          z-index: 1050;
+          border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+          border: 2px solid var(--border-color);
+          animation: scaleUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+        
+        .sketch-border {
+          border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+          border: 2px solid var(--border-color);
         }
+
+        @keyframes scaleUp {
+          from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
+          to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
         @media (max-width: 480px) {
           .terminal-window {
-            width: calc(100vw - 32px);
-            right: -8px;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100vw;
+            height: 90svh;
+            border-radius: 20px 20px 0 0;
+            border: 2px solid var(--border-color);
+            border-bottom: none;
+            z-index: 9999;
+            transform: translate(0, 0);
+          }
+          @keyframes scaleUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
           }
         }
+        
         .terminal-header {
-          background-color: #23211C;
-          border-bottom: 1px solid var(--border-color);
+          background-color: transparent;
+          border-bottom: 2px dashed var(--border-color);
           flex-shrink: 0;
         }
-        .dot {
-          display: inline-block;
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          cursor: pointer;
+        
+        .sketch-dot {
+          transition: transform 0.2s;
         }
-        .dot-red { background-color: #ff5f56; }
-        .dot-yellow { background-color: #ffbd2e; }
-        .dot-green { background-color: #27c93f; }
+        .sketch-dot:hover {
+          transform: scale(1.2) rotate(15deg);
+        }
+
         .terminal-title {
-          font-size: 0.75rem;
+          font-size: 0.85rem;
           color: var(--text-secondary);
+          letter-spacing: 0.1em;
         }
+        
         .terminal-body {
           flex-grow: 1;
           overflow-y: auto;
-          font-size: 0.8rem;
+          font-size: 0.95rem;
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          scrollbar-width: thin;
+          scrollbar-color: var(--accent-color) transparent;
         }
+        .terminal-body::-webkit-scrollbar {
+          width: 8px;
+        }
+        .terminal-body::-webkit-scrollbar-thumb {
+          background-color: var(--accent-color);
+          border-radius: 4px;
+        }
+        
         .terminal-line {
           white-space: pre-wrap;
-          line-height: 1.5;
+          line-height: 1.6;
+          letter-spacing: 0.02em;
         }
+        
         .terminal-line.system {
           color: var(--accent-color);
+          opacity: 0.9;
         }
         .terminal-line.input {
-          color: #E8E4DE;
-        }
-        .terminal-line.output {
-          color: #B5AFA5;
-        }
-        .prompt {
-          color: #27c93f;
+          color: var(--text-primary);
           font-weight: bold;
         }
+        .terminal-line.output {
+          color: var(--text-secondary);
+        }
+        
+        .prompt {
+          color: var(--accent-color);
+          font-weight: bold;
+        }
+        
         .terminal-input-form {
-          background-color: #23211C;
-          border-top: 1px solid var(--border-color);
+          background-color: transparent;
+          border-top: 2px dashed var(--border-color);
           flex-shrink: 0;
         }
+        
         .terminal-input {
           background: transparent;
           border: none;
-          color: #E8E4DE;
+          color: var(--text-primary);
           outline: none;
           font-family: inherit;
-          font-size: 0.8rem;
-          padding-left: 6px;
+          font-size: 0.95rem;
+          font-weight: bold;
+          letter-spacing: 0.02em;
         }
+        
+        .cursor-block {
+          color: var(--accent-color);
+          animation: blink 1s step-end infinite;
+          margin-left: 2px;
+          font-size: 1.1rem;
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        
         .thinking-dots {
           color: var(--text-muted);
           font-style: italic;
+          animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 1; }
+        }
+
+        .prompt-btn {
+          background-color: var(--bg-color);
+          color: var(--text-secondary);
+          font-family: inherit;
+          border-color: var(--border-color);
+          transition: all 0.2s;
+          padding: 8px 12px;
+        }
+        .prompt-btn:hover {
+          background-color: rgba(218, 119, 86, 0.1);
+          border-color: var(--accent-color);
+          color: var(--text-primary);
+          transform: translateX(5px);
         }
       `}</style>
     </div>

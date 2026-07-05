@@ -1,0 +1,214 @@
+/* AI Architect System Roadmap Styles */
+
+.roadmap-section {
+  position: relative;
+  font-family: var(--font-sans);
+}
+
+.roadmap-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Direct Block-to-Block Connectors */
+.node-svg-connector {
+  position: absolute;
+  top: 100%;
+  left: 22%; /* Start slightly inside the box center */
+  width: 56%; /* Span across the center */
+  height: 4rem; /* Exactly covers the gap between nodes (margin-bottom) */
+  z-index: -1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.node-svg-connector-mobile {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 4rem;
+  z-index: -1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.roadmap-node-container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4rem;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .roadmap-node-container {
+    padding-left: 70px; /* Space for the left spine on mobile */
+  }
+}
+
+@media (min-width: 768px) {
+  .roadmap-node-container:nth-child(odd) {
+    justify-content: flex-start;
+  }
+  .roadmap-node-container:nth-child(even) {
+    justify-content: flex-end;
+  }
+}
+
+/* The actual clickable node */
+.system-node {
+  background: var(--card-bg, #2D2B27);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+}
+
+.system-node:hover {
+  transform: translateY(-4px) rotate(-1deg);
+  border-color: var(--accent-color);
+  box-shadow: 6px 8px 0px rgba(218, 119, 86, 0.2);
+}
+
+.system-node.active {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 20px rgba(218, 119, 86, 0.15);
+}
+
+.node-number {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  width: 34px;
+  height: 34px;
+  background: var(--bg-color);
+  border: 2px solid var(--text-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-handwriting, 'Caveat', cursive);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+@media (min-width: 768px) {
+  .roadmap-node-container:nth-child(even) .node-number {
+    left: -15px;
+  }
+  .roadmap-node-container:nth-child(odd) .node-number {
+    left: auto;
+    right: -15px;
+  }
+}
+
+.node-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.node-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+/* Handwritten Stick Note (The expanded content) */
+.sticky-note-wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 20;
+  margin-top: 1.5rem;
+}
+
+.sticky-note {
+  background: #fdf5e6;
+  color: #2b2b2b;
+  padding: 1.5rem;
+  box-shadow: 2px 4px 15px rgba(0,0,0,0.15);
+  filter: url(#pencil-texture);
+  transform: rotate(2deg);
+  position: relative;
+}
+
+[data-theme='dark'] .sticky-note {
+  background: #2D2B27;
+  color: #E8E4DE;
+  border: 1px solid rgba(232, 228, 222, 0.1);
+  box-shadow: 2px 4px 15px rgba(0,0,0,0.5);
+}
+
+.sticky-tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 60px;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(2px);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+[data-theme='dark'] .sticky-tape {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.note-heading {
+  font-family: var(--font-handwriting, 'Caveat', cursive);
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+[data-theme='dark'] .note-heading {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.note-body {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.note-tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.note-tech-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  opacity: 0.8;
+}
+
+.note-projects {
+  margin-top: 1rem;
+  font-family: var(--font-handwriting, 'Caveat', cursive);
+  font-size: 1.2rem;
+  color: var(--accent-color);
+}

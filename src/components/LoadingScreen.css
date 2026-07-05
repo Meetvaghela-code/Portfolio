@@ -1,0 +1,246 @@
+/* Cinematic Loading Screen Styles */
+
+.loading-screen-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  /* The transition mask reveal will be handled by Framer Motion exit animation */
+}
+
+/* Cinematic camera drift container */
+.cinematic-camera {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform: translateZ(0);
+  /* Hardware acceleration */
+}
+
+.blueprint-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 800px;
+  height: 60vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* Align to bottom so new lines push old ones up */
+}
+
+.opening-title {
+  font-size: 2rem;
+  font-weight: 500;
+  opacity: 0.8;
+  margin: 0 auto;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.story-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  height: 100%;
+  padding-bottom: 4rem;
+  /* Give space for signature */
+}
+
+.story-line {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  position: relative;
+  will-change: opacity, transform, filter;
+}
+
+.history-line {
+  opacity: 0.35;
+  transform: translateY(-5px) scale(0.98);
+  filter: blur(0.5px);
+  transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.active-line {
+  opacity: 1;
+  font-size: 1.2rem;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  transform: translateY(0) scale(1);
+  transition: all 0.4s ease-out;
+}
+
+.terminal-prefix {
+  color: var(--accent-color);
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.cursor {
+  animation: blink 1s step-start infinite;
+  opacity: 0.7;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.icon-wrapper {
+  margin-left: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sketch-icon {
+  filter: url(#pencil-texture);
+  opacity: 0.85;
+}
+
+/* Fallback for lightweight mobile SVG stroke */
+.sketch-icon-mobile {
+  opacity: 0.6;
+}
+
+.signature-container {
+  position: absolute;
+  bottom: 5%;
+  right: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signature-svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.signature-title {
+  margin-top: -10px;
+}
+
+/* Margin Notes - Handwritten */
+.margin-note {
+  position: absolute;
+  font-family: var(--font-handwriting, 'Caveat', cursive);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  opacity: 0.6;
+  filter: url(#pencil-texture);
+}
+
+.margin-note-mobile {
+  opacity: 0.4;
+}
+
+.margin-note.top-right {
+  top: 15%;
+  right: 15%;
+  transform: rotate(4deg);
+}
+
+.margin-note.bottom-left {
+  bottom: 30%;
+  left: 10%;
+  transform: rotate(-6deg);
+}
+
+/* Pencil Dust Particle System */
+.pencil-dust-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.pencil-dust {
+  position: absolute;
+  background-color: var(--text-primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-dust 4s ease-in-out infinite;
+}
+
+@keyframes float-dust {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.4;
+  }
+
+  80% {
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translate(10px, 15px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Invisible pencil tip */
+.pencil-tip {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: var(--text-primary);
+  border-radius: 50%;
+  filter: blur(1px);
+  z-index: 20;
+}
+
+.skip-hint {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  opacity: 0.3;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 100;
+  transition: opacity 0.3s;
+}
+
+.loading-screen-container:hover .skip-hint {
+  opacity: 0.7;
+}

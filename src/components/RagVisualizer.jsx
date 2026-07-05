@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import GlowCard from './GlowCard';
+import React, { useState } from 'react';
 import ScrollReveal from './ScrollReveal';
 
 // --- Inline SVG Icons ---
@@ -76,8 +75,17 @@ const RagVisualizer = () => {
   const currentPrompt = prompts[selectedPrompt];
 
   return (
-    <GlowCard className="p-4 p-md-5 mb-5" style={{ background: 'var(--card-bg)', border: '1px solid var(--border-color)' }}>
-      <div className="row g-4 align-items-center">
+    <div className="rag-visualizer-container position-relative p-4 p-md-5 mb-5 overflow-hidden">
+      
+      {/* Background Texture Overlay */}
+      <div className="position-absolute top-0 start-0 w-100 h-100 opacity-25" style={{ filter: 'url(#pencil-texture)', pointerEvents: 'none', zIndex: 0 }}></div>
+      
+      {/* Handwritten Annotation */}
+      <span className="position-absolute d-none d-md-block" style={{ top: '15px', right: '30px', fontFamily: 'var(--font-handwriting)', fontSize: '1.2rem', color: '#DA7756', transform: 'rotate(8deg)', zIndex: 10 }}>
+        Architecture Flow
+      </span>
+
+      <div className="row g-4 align-items-center position-relative z-1">
         
         {/* Left Column: Control Panel & Terminal Logs */}
         <div className="col-lg-5">
@@ -87,7 +95,7 @@ const RagVisualizer = () => {
           </p>
 
           {/* Prompt Selector */}
-          <div className="d-flex flex-column gap-2 mb-4">
+          <div className="d-flex flex-column gap-3 mb-4">
             {prompts.map((p, idx) => (
               <button
                 key={idx}
@@ -99,17 +107,12 @@ const RagVisualizer = () => {
                   }
                 }}
                 disabled={isProcessing}
-                className="btn text-start p-3 rounded-3"
-                style={{
-                  fontSize: '0.85rem',
-                  border: '1px solid var(--border-color)',
-                  backgroundColor: selectedPrompt === idx ? 'var(--accent-glow)' : 'var(--bg-color)',
-                  color: selectedPrompt === idx ? 'var(--accent-color)' : 'var(--text-primary)',
-                  fontWeight: selectedPrompt === idx ? '600' : '400',
-                  transition: 'all 0.25s ease'
-                }}
+                className={`btn text-start p-3 ${selectedPrompt === idx ? 'prompt-btn-active' : 'prompt-btn-idle'}`}
               >
-                {p.text}
+                <div className="d-flex align-items-center gap-2">
+                  <span style={{ color: selectedPrompt === idx ? 'var(--accent-color)' : 'var(--text-muted)' }}>&gt;</span>
+                  <span>{p.text}</span>
+                </div>
               </button>
             ))}
           </div>
@@ -117,118 +120,45 @@ const RagVisualizer = () => {
           <button
             onClick={handleStart}
             disabled={isProcessing}
-            className="btn btn-apple w-100 py-3 mb-4 d-flex align-items-center justify-content-center gap-2"
+            className="btn rag-run-btn w-100 py-3 mb-4 d-flex align-items-center justify-content-center gap-2 fw-bold"
           >
             <Play size={14} /> Run Routing Workflow
           </button>
 
-          {/* Real-time Agent Logs */}
-          <div 
-            className="p-3 rounded-3"
-            style={{ 
-              backgroundColor: '#1A1915', 
-              color: '#B5AFA5', 
-              fontFamily: 'var(--font-mono, monospace)', 
-              fontSize: '0.75rem',
-              height: '140px',
-              overflowY: 'auto',
-              border: '1px solid rgba(218, 119, 86, 0.2)'
-            }}
-          >
-            {logs.length === 0 ? (
-              <span style={{ color: 'var(--text-muted)' }}>Console idle. Click Run to view routing execution logs...</span>
-            ) : (
-              logs.map((log, i) => (
-                <div key={i} className="mb-2" style={{ lineHeight: '1.4' }}>
-                  {log}
+          {/* Real-time Agent Logs (Terminal Style) */}
+          <div className="rag-terminal-box">
+            {/* Terminal Header */}
+            <div className="rag-terminal-header d-flex align-items-center justify-content-between px-3 py-2">
+              <div className="d-flex align-items-center gap-2">
+                <svg width="10" height="10" viewBox="0 0 100 100" className="sketch-dot sketch-dot-red"><path d="M 20 50 Q 50 10 80 50 Q 50 90 20 50" fill="#ff5f56" stroke="#cc3a32" strokeWidth="6" /></svg>
+                <svg width="10" height="10" viewBox="0 0 100 100" className="sketch-dot sketch-dot-yellow"><circle cx="50" cy="50" r="35" fill="#ffbd2e" stroke="#c9921c" strokeWidth="6" strokeDasharray="50 10" /></svg>
+                <svg width="10" height="10" viewBox="0 0 100 100" className="sketch-dot sketch-dot-green"><path d="M 50 15 L 85 85 L 15 85 Z" fill="#27c93f" stroke="#1da132" strokeWidth="6" strokeLinejoin="round" /></svg>
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>agent_console.exe</div>
+            </div>
+            
+            {/* Terminal Body */}
+            <div className="rag-terminal-body p-3">
+              {logs.length === 0 ? (
+                <span style={{ color: 'var(--text-muted)' }}>agent@meet:~$ Console idle. Click Run to execute...</span>
+              ) : (
+                logs.map((log, i) => (
+                  <div key={i} className="mb-2" style={{ lineHeight: '1.5' }}>
+                    <span style={{ color: 'var(--accent-color)' }}>&gt;</span> {log}
+                  </div>
+                ))
+              )}
+              {isProcessing && (
+                <div className="mt-2" style={{ color: 'var(--text-muted)', fontStyle: 'italic', animation: 'pulse 1.5s infinite' }}>
+                  Processing step...
                 </div>
-              ))
-            )}
+              )}
+            </div>
           </div>
         </div>
 
         {/* Right Column: Interactive Diagram Flow */}
-        <div className="col-lg-7 text-center">
-          <style>{`
-            .flow-node {
-              border: 1px solid var(--border-color);
-              background: var(--bg-color);
-              border-radius: 10px;
-              padding: 12px 20px;
-              display: inline-flex;
-              align-items: center;
-              gap: 8px;
-              font-size: 0.8rem;
-              font-weight: 550;
-              transition: all 0.4s ease;
-              position: relative;
-            }
-            .flow-node.active {
-              border-color: var(--accent-color);
-              box-shadow: 0 0 15px var(--accent-glow);
-              background-color: var(--accent-glow);
-              color: var(--accent-color);
-              transform: scale(1.05);
-            }
-            .flow-line {
-              width: 2px;
-              height: 35px;
-              background-color: var(--border-color);
-              margin: 0 auto;
-              position: relative;
-              transition: background-color 0.4s ease;
-            }
-            .flow-line.active {
-              background-color: var(--accent-color);
-            }
-            /* Arrow indicators */
-            .flow-line::after {
-              content: '';
-              position: absolute;
-              bottom: 0;
-              left: 50%;
-              transform: translateX(-50%);
-              border-width: 5px 4px 0 4px;
-              border-style: solid;
-              border-color: var(--border-color) transparent transparent transparent;
-            }
-            .flow-line.active::after {
-              border-top-color: var(--accent-color);
-            }
-            /* Horizontal flows */
-            .horizontal-flow {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 15px;
-              width: 100%;
-              margin: 15px 0;
-            }
-            .flow-line-horiz {
-              height: 2px;
-              width: 40px;
-              background-color: var(--border-color);
-              position: relative;
-              transition: background-color 0.4s ease;
-            }
-            .flow-line-horiz.active {
-              background-color: var(--accent-color);
-            }
-            .flow-line-horiz::after {
-              content: '';
-              position: absolute;
-              right: 0;
-              top: 50%;
-              transform: translateY(-50%);
-              border-width: 4px 0 4px 5px;
-              border-style: solid;
-              border-color: transparent transparent transparent var(--border-color);
-            }
-            .flow-line-horiz.active::after {
-              border-left-color: var(--accent-color);
-            }
-          `}</style>
-
+        <div className="col-lg-7 text-center pt-4 pt-lg-0">
           <div className="d-flex flex-column align-items-center py-3">
             
             {/* 1. User Query */}
@@ -236,7 +166,7 @@ const RagVisualizer = () => {
               <span>❓</span> {currentPrompt.steps[0].label}
             </div>
 
-            <div className={`flow-line ${['router', 'vector', 'search', 'generator', 'output'].includes(activeStep) ? 'active' : ''}`} />
+            <div className={`flow-line-vertical ${['router', 'vector', 'search', 'generator', 'output'].includes(activeStep) ? 'active' : ''}`} />
 
             {/* 2. Query Router */}
             <div className={`flow-node ${activeStep === 'router' ? 'active' : ''}`}>
@@ -244,22 +174,22 @@ const RagVisualizer = () => {
             </div>
 
             {/* Parallel routing options (Vector DB vs Web Search) */}
-            <div className="horizontal-flow">
+            <div className="horizontal-flow d-flex align-items-center justify-content-center gap-3 w-100 my-3">
               
-              <div className="d-flex flex-column align-items-center">
-                <div className={`flow-line ${['vector', 'generator', 'output'].includes(activeStep) && currentPrompt.route === 'vector' ? 'active' : ''}`} />
+              <div className="d-flex flex-column align-items-center" style={{ width: '160px' }}>
+                <div className={`flow-line-vertical short ${['vector', 'generator', 'output'].includes(activeStep) && currentPrompt.route === 'vector' ? 'active' : ''}`} />
                 <div className={`flow-node ${activeStep === 'vector' ? 'active' : ''}`}>
-                  <Database size={16} /> Vector DB (FAISS)
+                  <Database size={16} /> Vector DB
                 </div>
-                <div className={`flow-line ${['generator', 'output'].includes(activeStep) && currentPrompt.route === 'vector' ? 'active' : ''}`} />
+                <div className={`flow-line-vertical short ${['generator', 'output'].includes(activeStep) && currentPrompt.route === 'vector' ? 'active' : ''}`} />
               </div>
 
-              <div className="d-flex flex-column align-items-center">
-                <div className={`flow-line ${['search', 'generator', 'output'].includes(activeStep) && currentPrompt.route === 'search' ? 'active' : ''}`} />
+              <div className="d-flex flex-column align-items-center" style={{ width: '160px' }}>
+                <div className={`flow-line-vertical short ${['search', 'generator', 'output'].includes(activeStep) && currentPrompt.route === 'search' ? 'active' : ''}`} />
                 <div className={`flow-node ${activeStep === 'search' ? 'active' : ''}`}>
-                  <Search size={16} /> Web Search API
+                  <Search size={16} /> Web Search
                 </div>
-                <div className={`flow-line ${['generator', 'output'].includes(activeStep) && currentPrompt.route === 'search' ? 'active' : ''}`} />
+                <div className={`flow-line-vertical short ${['generator', 'output'].includes(activeStep) && currentPrompt.route === 'search' ? 'active' : ''}`} />
               </div>
 
             </div>
@@ -269,26 +199,156 @@ const RagVisualizer = () => {
               <span>🤖</span> {currentPrompt.route === 'vector' ? currentPrompt.steps[3].label : currentPrompt.steps[3].label}
             </div>
 
-            <div className={`flow-line ${activeStep === 'output' ? 'active' : ''}`} />
+            <div className={`flow-line-vertical ${activeStep === 'output' ? 'active' : ''}`} />
 
             {/* 4. Output Response Box */}
-            <div 
-              className={`flow-node p-3 ${activeStep === 'output' ? 'active' : ''}`}
-              style={{ maxWidth: '340px', borderStyle: 'dashed' }}
-            >
-              <div className="text-start">
-                <span className="tracked-sub d-block mb-1" style={{ fontSize: '0.65rem' }}>Final Result</span>
-                <span className="small" style={{ lineHeight: '1.4' }}>
-                  {activeStep === 'output' ? currentPrompt.steps[4].desc : 'Waiting for completion...'}
-                </span>
-              </div>
+            <div className={`flow-node output-node text-start p-3 ${activeStep === 'output' ? 'active' : ''}`}>
+              <span className="tracked-sub d-block mb-1" style={{ fontSize: '0.65rem' }}>Final Result</span>
+              <span className="small d-block" style={{ lineHeight: '1.5' }}>
+                {activeStep === 'output' ? currentPrompt.steps[4].desc : 'Waiting for completion...'}
+              </span>
             </div>
 
           </div>
         </div>
 
       </div>
-    </GlowCard>
+
+      <style>{`
+        /* Container Styling */
+        .rag-visualizer-container {
+          background-color: var(--card-bg);
+          border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+          border: 2px solid var(--border-color);
+        }
+
+        /* Buttons Styling */
+        .prompt-btn-idle, .prompt-btn-active {
+          background-color: var(--bg-color);
+          border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+          border: 2px solid var(--border-color);
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          color: var(--text-primary);
+          transition: all 0.3s;
+        }
+        .prompt-btn-idle:hover {
+          border-color: var(--text-secondary);
+          transform: translateY(-2px);
+        }
+        .prompt-btn-active {
+          border-color: var(--accent-color);
+          background-color: rgba(218, 119, 86, 0.05);
+          font-weight: 600;
+        }
+
+        .rag-run-btn {
+          background-color: transparent;
+          color: var(--text-primary);
+          border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
+          border: 2px solid var(--accent-color);
+          font-family: inherit;
+          transition: all 0.3s;
+        }
+        .rag-run-btn:hover:not(:disabled) {
+          background-color: var(--accent-color);
+          color: white;
+          transform: scale(1.02) rotate(-1deg);
+        }
+        .rag-run-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          border-color: var(--border-color);
+        }
+
+        /* Rag Terminal Box */
+        .rag-terminal-box {
+          background-color: var(--card-bg);
+          border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
+          border: 2px solid var(--border-color);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+        .rag-terminal-header {
+          border-bottom: 2px dashed var(--border-color);
+        }
+        .rag-terminal-body {
+          color: var(--text-secondary);
+          font-family: var(--font-mono, monospace);
+          font-size: 0.75rem;
+          height: 150px;
+          overflow-y: auto;
+          position: relative;
+        }
+        
+        /* Flow Nodes (Hand-drawn look) */
+        .flow-node {
+          background-color: var(--bg-color);
+          border: 2px solid var(--border-color);
+          border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+          padding: 12px 20px;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.8rem;
+          font-weight: 550;
+          color: var(--text-primary);
+          transition: all 0.4s ease;
+          position: relative;
+          z-index: 2;
+        }
+        .flow-node.active {
+          border-color: var(--accent-color);
+          background-color: rgba(218, 119, 86, 0.1);
+          color: var(--text-primary);
+          transform: scale(1.05) rotate(1deg);
+        }
+        .output-node {
+          max-width: 340px;
+          border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
+          border-style: dashed !important;
+        }
+
+        /* Flow Lines (Dashed Hand-drawn style) */
+        .flow-line-vertical {
+          width: 2px;
+          height: 35px;
+          background-image: linear-gradient(to bottom, var(--border-color) 50%, transparent 50%);
+          background-size: 2px 8px;
+          background-repeat: repeat-y;
+          margin: 0 auto;
+          position: relative;
+          z-index: 1;
+        }
+        .flow-line-vertical.short {
+          height: 25px;
+        }
+        .flow-line-vertical.active {
+          background-image: linear-gradient(to bottom, var(--accent-color) 50%, transparent 50%);
+        }
+        
+        /* Hand-drawn Arrow Indicator at the bottom of the line */
+        .flow-line-vertical::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 50%;
+          transform: translateX(-50%);
+          border-width: 6px 5px 0 5px;
+          border-style: solid;
+          border-color: var(--border-color) transparent transparent transparent;
+        }
+        .flow-line-vertical.active::after {
+          border-top-color: var(--accent-color);
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 1; }
+        }
+      `}</style>
+    </div>
   );
 };
 

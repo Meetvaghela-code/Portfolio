@@ -52,7 +52,7 @@ const MoonIcon = () => (
   </svg>
 );
 
-const Header = () => {
+const Header = ({ hasLoaded = true }) => {
   const scrollProgress = useScrollProgress();
   const location = useLocation();
 
@@ -64,6 +64,30 @@ const Header = () => {
     }
     return 'light';
   });
+
+  // Terminal Hint State
+  const [showTerminalHint, setShowTerminalHint] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname === '/' && hasLoaded) {
+      // Delay to allow layout to settle after loading
+      const timer = setTimeout(() => {
+        setShowTerminalHint(true);
+      }, 1500); // 1.5s delay after load
+      
+      // Auto hide after 10 seconds
+      const hideTimer = setTimeout(() => {
+        setShowTerminalHint(false);
+      }, 11500);
+      
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(hideTimer);
+      };
+    } else {
+      setShowTerminalHint(false);
+    }
+  }, [location.pathname, hasLoaded]);
 
   // Apply Theme Effect
   useEffect(() => {
@@ -103,7 +127,7 @@ const Header = () => {
           /* MacOS bottom Dock styling */
           .apple-dock-container {
             position: fixed;
-            bottom: 24px;
+            bottom: max(24px, env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%);
             z-index: 1050;
@@ -118,6 +142,7 @@ const Header = () => {
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
             gap: 10px;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            max-width: 95vw;
           }
 
           [data-theme='dark'] .apple-dock-container {
@@ -126,13 +151,15 @@ const Header = () => {
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
           }
 
-          .apple-dock-container:hover {
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
-            border-color: rgba(218, 119, 86, 0.15);
-          }
-          [data-theme='dark'] .apple-dock-container:hover {
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
-            border-color: rgba(218, 119, 86, 0.2);
+          @media (hover: hover) and (pointer: fine) {
+            .apple-dock-container:hover {
+              box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+              border-color: rgba(218, 119, 86, 0.15);
+            }
+            [data-theme='dark'] .apple-dock-container:hover {
+              box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+              border-color: rgba(218, 119, 86, 0.2);
+            }
           }
 
           /* Dock items */
@@ -141,6 +168,7 @@ const Header = () => {
             display: flex;
             flex-direction: column;
             align-items: center;
+            flex-shrink: 0;
           }
 
           .dock-item {
@@ -157,14 +185,22 @@ const Header = () => {
             cursor: pointer;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, color 0.2s ease;
           }
-
-          .dock-item:hover {
-            transform: scale(1.2) translateY(-6px);
+          
+          /* Active state for touch devices */
+          .dock-item:active {
+            transform: scale(0.95);
             background-color: rgba(218, 119, 86, 0.08);
-            color: var(--accent-color);
           }
-          [data-theme='dark'] .dock-item:hover {
-            background-color: rgba(218, 119, 86, 0.15);
+
+          @media (hover: hover) and (pointer: fine) {
+            .dock-item:hover {
+              transform: scale(1.2) translateY(-6px);
+              background-color: rgba(218, 119, 86, 0.08);
+              color: var(--accent-color);
+            }
+            [data-theme='dark'] .dock-item:hover {
+              background-color: rgba(218, 119, 86, 0.15);
+            }
           }
 
           /* Active dot indicator */
@@ -200,9 +236,11 @@ const Header = () => {
             color: #1A1915;
           }
 
-          .dock-item-wrapper:hover .dock-tooltip {
-            opacity: 1;
-            transform: translateY(0);
+          @media (hover: hover) and (pointer: fine) {
+            .dock-item-wrapper:hover .dock-tooltip {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
 
           /* Divider in dock */
@@ -211,6 +249,61 @@ const Header = () => {
             height: 28px;
             background-color: var(--border-color);
             margin: 0 4px;
+            flex-shrink: 0;
+          }
+          
+          /* Mobile Responsiveness */
+          @media (max-width: 480px) {
+            .apple-dock-container {
+              padding: 6px 8px;
+              gap: 4px;
+              bottom: max(16px, env(safe-area-inset-bottom));
+            }
+            .dock-item {
+              width: 38px;
+              height: 38px;
+            }
+            .apple-top-header {
+              top: max(16px, env(safe-area-inset-top));
+            }
+          }
+
+          /* Terminal Hint Animation */
+          @keyframes terminalJump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+          }
+          .terminal-jump-anim {
+            animation: terminalJump 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+            color: var(--accent-color) !important;
+            background-color: rgba(218, 119, 86, 0.08) !important;
+          }
+          .terminal-hint-tooltip {
+            position: absolute;
+            top: -65px;
+            right: -30px;
+            background: transparent;
+            color: var(--accent-color);
+            font-family: var(--font-handwriting);
+            font-size: 1.2rem;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px) rotate(5deg);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1060;
+          }
+          .terminal-hint-tooltip.show {
+            opacity: 1;
+            transform: translateY(0) rotate(5deg);
+          }
+          .terminal-hint-arrow {
+            margin-top: 2px;
+            margin-left: 20px;
+            transform: rotate(20deg);
           }
         `}
       </style>
@@ -277,11 +370,24 @@ const Header = () => {
         <div className="dock-divider" />
 
         {/* Terminal Toggle Button */}
-        <div className="dock-item-wrapper">
+        <div className="dock-item-wrapper position-relative">
           <div className="dock-tooltip">Terminal Chat</div>
+          
+          {/* Handwritten Hint pointing to Terminal */}
+          <div className={`terminal-hint-tooltip ${showTerminalHint ? 'show' : ''}`}>
+            <span>Ask me about my portfolio!</span>
+            <svg width="30" height="30" viewBox="0 0 100 100" className="terminal-hint-arrow">
+              <path d="M 20 20 Q 50 80 80 80" fill="none" stroke="var(--accent-color)" strokeWidth="4" />
+              <path d="M 60 70 L 80 80 L 75 60" fill="none" stroke="var(--accent-color)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
           <button
-            onClick={triggerTerminal}
-            className="dock-item"
+            onClick={() => {
+              triggerTerminal();
+              setShowTerminalHint(false); // hide hint when clicked
+            }}
+            className={`dock-item ${showTerminalHint ? 'terminal-jump-anim' : ''}`}
             style={{ color: 'var(--text-secondary)' }}
             aria-label="Toggle terminal chat"
           >
