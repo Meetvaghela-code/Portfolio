@@ -59,6 +59,8 @@ const StatItem = ({ target, label, suffix = '' }) => {
 const About = () => {
   const skills = [
     { name: 'LangChain & LangGraph', level: 90, color: '#DA7756' },
+    { name: 'Crew AI', level: 90, color: '#6e640aff' },
+    { name: 'Autogen', level: 90, color: '#7b4b0fff' },
     { name: 'Python', level: 95, color: '#8B6E4E' },
     { name: 'TensorFlow', level: 75, color: '#C4613F' },
     { name: 'Generative AI', level: 85, color: '#A8522E' },
