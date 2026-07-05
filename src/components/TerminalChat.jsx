@@ -322,10 +322,11 @@ const TerminalChat = () => {
           width: 700px;
           max-width: 95vw;
           height: 500px;
+          max-height: 90vh;
           background-color: var(--card-bg); /* Adapts to light/dark mode */
           display: flex;
           flex-direction: column;
-          overflow: visible;
+          overflow: hidden;
           z-index: 1050;
           border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
           border: 2px solid var(--border-color);
@@ -342,22 +343,24 @@ const TerminalChat = () => {
           to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
           .terminal-window {
-            position: fixed;
+            top: auto;
+            left: 0;
             bottom: 0;
             right: 0;
             width: 100vw;
-            height: 90svh;
+            max-width: 100vw;
+            height: 85svh;
             border-radius: 20px 20px 0 0;
             border: 2px solid var(--border-color);
             border-bottom: none;
-            z-index: 9999;
-            transform: translate(0, 0);
+            transform: none;
+            animation: slideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
           }
-          @keyframes scaleUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
+          @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
           }
         }
         
