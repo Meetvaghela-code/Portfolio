@@ -34,23 +34,17 @@ const contactLimiter = rateLimit({
   }
 });
 
-// Chat Speed Limiter: Delay responses after 10 requests in a minute
-const chatSpeedLimiter = slowDown({
-  windowMs: 60 * 1000, // 1 minute
-  delayAfter: 10,
-  delayMs: (hits) => (hits - 10) * 500, // 11th request has 500ms delay, 12th has 1000ms delay, etc.
-});
-
-// Chat Rate Limiter: Max 20 requests per minute
+// Chat Rate Limiter: Strictly max 10 requests per minute
 const chatRateLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 20,
+  max: 10,
   message: { text: "Wow, you're chatting fast! 🤖 Please take a quick breather for a minute before sending more messages." },
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res, next, options) => {
     console.warn(`[Rate Limit Exceeded] Chat API IP: ${req.ip}`);
-    res.json(options.message); // Return 200 with text so the frontend widget displays it nicely as a bot reply
+    // We can return a 429 status code, but we still send {text} so the frontend handles it nicely
+    res.status(429).json(options.message);
   }
 });
 
@@ -102,7 +96,7 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
 });
 
 // Secure Groq API Route
-app.post('/api/chat', chatSpeedLimiter, chatRateLimiter, async (req, res) => {
+app.post('/api/chat', chatRateLimiter, async (req, res) => {
   const { message } = req.body;
 
   // Request Validation
